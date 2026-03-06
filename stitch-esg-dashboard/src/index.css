@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@theme {
+  --color-primary: #2ec4b6;
+  --color-background-light: #f0fdfa;
+  --color-background-dark: #0d1b1e;
+  
+  --font-display: "Inter", sans-serif;
+  
+  --radius-default: 0.75rem;
+  --radius-lg: 1.25rem;
+  --radius-xl: 2rem;
+}
+
+@layer base {
+  body {
+    @apply font-display bg-background-light dark:bg-background-dark text-slate-900 dark:text-slate-100;
+  }
+}
