@@ -6,7 +6,7 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { useAuth } from '../context/useAuth';
 import { Building2, Mail, MapPin, Tag } from 'lucide-react';
-import { Company } from '../types';
+import type { Company } from '../types';
 
 export const ProfilePage: React.FC = () => {
   const { user } = useAuth();

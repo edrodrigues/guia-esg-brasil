@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import {
   onAuthStateChanged,
   signOut as firebaseSignOut,
-  User
+  type User
 } from 'firebase/auth';
 import { auth } from '../firebase';
 import { AuthContext } from './useAuth';

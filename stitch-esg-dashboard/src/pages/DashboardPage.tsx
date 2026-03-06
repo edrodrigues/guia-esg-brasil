@@ -9,7 +9,7 @@ import { Leaf, Users, Gavel, TrendingUp, TrendingDown, PlusCircle, Mail, CloudSy
 import { useAuth } from '../context/useAuth';
 import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '../firebase';
-import { type Company, type Mission } from '../types';
+import type { Company, Mission } from '../types';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
