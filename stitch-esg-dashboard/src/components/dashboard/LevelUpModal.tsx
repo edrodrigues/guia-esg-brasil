@@ -1,23 +1,44 @@
 import React, { useEffect, useState } from 'react';
-import { Trophy, X, Star } from 'lucide-react';
+import { Trophy, Star } from 'lucide-react';
 import { Button } from '../ui/Button';
+
+export interface Particle {
+  id: number;
+  left: string;
+  top: string;
+  delay: string;
+}
 
 interface LevelUpModalProps {
   isOpen: boolean;
   onClose: () => void;
   level: number;
   levelName: string;
+  particles?: Particle[];
 }
 
-export const LevelUpModal: React.FC<LevelUpModalProps> = ({ isOpen, onClose, level, levelName }) => {
-  const [showConfetti, setShowConfetti] = useState(false);
+export const LevelUpModal: React.FC<LevelUpModalProps> = ({ isOpen, onClose, level, levelName, particles = [] }) => {
+  const [active, setActive] = useState(false);
 
   useEffect(() => {
-    if (isOpen) {
-      setShowConfetti(true);
-      const timer = setTimeout(() => setShowConfetti(false), 3000);
-      return () => clearTimeout(timer);
+    if (!isOpen) {
+      // Async update to avoid lint warning
+      const t = setTimeout(() => setActive(false), 0);
+      return () => clearTimeout(t);
     }
+
+    const startTimer = setTimeout(() => {
+      setActive(true);
+    }, 50);
+
+    const endTimer = setTimeout(() => {
+      setActive(false);
+    }, 3050);
+
+    return () => {
+      clearTimeout(startTimer);
+      clearTimeout(endTimer);
+    };
   }, [isOpen]);
 
   if (!isOpen) return null;
@@ -32,16 +53,16 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({ isOpen, onClose, lev
         </div>
 
         {/* Confetti Particles (Simplified CSS representation) */}
-        {showConfetti && (
+        {active && (
            <div className="absolute inset-0 overflow-hidden pointer-events-none">
-             {[...Array(20)].map((_, i) => (
+             {particles.map((p) => (
                <div 
-                 key={i}
+                 key={p.id}
                  className="absolute w-2 h-2 bg-primary rounded-full animate-ping"
                  style={{
-                   left: `${Math.random() * 100}%`,
-                   top: `${Math.random() * 100}%`,
-                   animationDelay: `${Math.random() * 2}s`,
+                   left: p.left,
+                   top: p.top,
+                   animationDelay: p.delay,
                    animationDuration: '1s'
                  }}
                />
@@ -57,7 +78,7 @@ export const LevelUpModal: React.FC<LevelUpModalProps> = ({ isOpen, onClose, lev
             <div className="absolute top-0 left-0 w-24 h-24 bg-secondary rounded-2xl -rotate-6 opacity-50 z-0"></div>
           </div>
           
-          <h2 className="text-4xl font-black text-slate-900 dark:text-slate-100 mb-2 uppercase tracking-tighter italic">Level Up!</h2>
+          <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-2 uppercase tracking-tighter italic">Level Up!</h2>
           <p className="text-slate-500 dark:text-slate-400 mb-6 font-bold text-sm">A empresa evoluiu para o nível</p>
           
           <div className="bg-slate-50 dark:bg-slate-800 py-4 px-8 rounded-2xl mb-8 border-2 border-slate-200 dark:border-slate-700 w-full transform hover:scale-105 transition-transform">

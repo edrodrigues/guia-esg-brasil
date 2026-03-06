@@ -3,7 +3,8 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
-import { auth } from '../firebase';
+import { doc, getDoc, setDoc } from 'firebase/firestore';
+import { auth, db } from '../firebase';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
 import { LeafyGreen, Mail, Lock } from 'lucide-react';
@@ -30,7 +31,7 @@ export const LoginPage: React.FC = () => {
     try {
       await signInWithEmailAndPassword(auth, data.email, data.password);
       navigate('/');
-    } catch (err: any) {
+    } catch {
       setError('Falha no login. Verifique suas credenciais.');
     } finally {
       setIsLoading(false);
@@ -39,11 +40,44 @@ export const LoginPage: React.FC = () => {
 
   const handleGoogleLogin = async () => {
     const provider = new GoogleAuthProvider();
+    setIsLoading(true);
+    setError(null);
     try {
-      await signInWithPopup(auth, provider);
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Check if user document exists
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (!userDocSnap.exists()) {
+        // New user from Google - Create default company and profile
+        const companyId = `comp_${Date.now()}`;
+        await setDoc(doc(db, 'companies', companyId), {
+          name: 'Minha Empresa ESG',
+          industry: 'Not specified',
+          region: 'Not specified',
+          currentXP: 0,
+          level: 1,
+          esgScores: { environmental: 0, social: 0, governance: 0 }
+        });
+
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          name: user.displayName || 'Mestre ESG',
+          email: user.email,
+          companyId: companyId,
+          role: 'admin',
+          avatarUrl: user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`
+        });
+      }
+
       navigate('/');
-    } catch (err: any) {
+    } catch (err: unknown) {
+      console.error("Google Login Error:", err);
       setError('Falha no login com Google.');
+    } finally {
+      setIsLoading(false);
     }
   };
 

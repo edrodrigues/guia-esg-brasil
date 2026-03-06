@@ -1,8 +1,10 @@
 import React from 'react';
 import { Search, Bell, Settings } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../../context/useAuth';
 
 export const Header: React.FC = () => {
+  const { user } = useAuth();
   return (
     <header className="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between z-40">
       <div className="flex items-center gap-4 flex-1">
@@ -28,12 +30,12 @@ export const Header: React.FC = () => {
         
         <Link to="/profile" className="flex items-center gap-3 hover:opacity-80 transition-opacity">
           <div className="text-right hidden sm:block">
-            <p className="text-sm font-bold text-slate-900 dark:text-slate-100">Usuário Mestre</p>
+            <p className="text-sm font-bold text-slate-900 dark:text-slate-100">{user?.displayName || 'Mestre ESG'}</p>
             <p className="text-xs text-slate-500">Gerente de Impacto</p>
           </div>
           <div 
             className="w-10 h-10 rounded-full bg-slate-200 bg-cover bg-center border-2 border-primary/20"
-            style={{ backgroundImage: `url('https://api.dicebear.com/7.x/avataaars/svg?seed=Felix')` }}
+            style={{ backgroundImage: `url('${user?.photoURL ?? `https://api.dicebear.com/7.x/avataaars/svg?seed=${user?.uid || 'Felix'}`}')` }}
           />
         </Link>
       </div>

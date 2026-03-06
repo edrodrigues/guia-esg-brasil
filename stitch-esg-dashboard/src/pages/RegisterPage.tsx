@@ -2,8 +2,8 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
-import { setDoc, doc } from 'firebase/firestore';
+import { createUserWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from 'firebase/auth';
+import { setDoc, doc, getDoc } from 'firebase/firestore';
 import { auth, db } from '../firebase';
 import { useNavigate, Link } from 'react-router-dom';
 import { Button } from '../components/ui/Button';
@@ -60,8 +60,51 @@ export const RegisterPage: React.FC = () => {
       });
 
       navigate('/');
-    } catch (err: any) {
+    } catch {
       setError('Erro ao criar conta. Tente novamente.');
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleGoogleLogin = async () => {
+    const provider = new GoogleAuthProvider();
+    setIsLoading(true);
+    setError(null);
+    try {
+      const result = await signInWithPopup(auth, provider);
+      const user = result.user;
+
+      // Check if user document exists
+      const userDocRef = doc(db, 'users', user.uid);
+      const userDocSnap = await getDoc(userDocRef);
+
+      if (!userDocSnap.exists()) {
+        // New user from Google - Create default company and profile
+        const companyId = `comp_${Date.now()}`;
+        await setDoc(doc(db, 'companies', companyId), {
+          name: 'Minha Empresa ESG',
+          industry: 'Not specified',
+          region: 'Not specified',
+          currentXP: 0,
+          level: 1,
+          esgScores: { environmental: 0, social: 0, governance: 0 }
+        });
+
+        await setDoc(userDocRef, {
+          uid: user.uid,
+          name: user.displayName || 'Mestre ESG',
+          email: user.email,
+          companyId: companyId,
+          role: 'admin',
+          avatarUrl: user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`
+        });
+      }
+
+      navigate('/');
+    } catch (err: unknown) {
+      console.error("Google Login Error:", err);
+      setError('Falha no login com Google.');
     } finally {
       setIsLoading(false);
     }
@@ -160,6 +203,23 @@ export const RegisterPage: React.FC = () => {
             Criar Minha Jornada
           </Button>
         </form>
+
+        <div className="my-8 flex items-center gap-4 text-slate-400">
+          <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+          <span className="text-xs font-bold uppercase tracking-widest">ou</span>
+          <div className="h-[1px] flex-1 bg-slate-200 dark:bg-slate-800"></div>
+        </div>
+
+        <Button 
+          type="button" 
+          variant="outline" 
+          className="w-full py-4 gap-3 font-bold"
+          onClick={handleGoogleLogin}
+          isLoading={isLoading}
+        >
+          <img src="https://www.gstatic.com/firebasejs/ui/2.0.0/images/auth/google.svg" className="w-5 h-5" alt="Google" />
+          <span>Registrar com Google</span>
+        </Button>
 
         <p className="mt-8 text-center text-sm text-slate-500">
           Já tem uma conta?{' '}

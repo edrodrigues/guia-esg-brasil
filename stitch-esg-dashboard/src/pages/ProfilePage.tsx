@@ -4,12 +4,13 @@ import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
 import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { Building2, Mail, MapPin, Tag } from 'lucide-react';
+import { Company } from '../types';
 
 export const ProfilePage: React.FC = () => {
   const { user } = useAuth();
-  const [company, setCompany] = useState<any>(null);
+  const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -22,10 +23,10 @@ export const ProfilePage: React.FC = () => {
           const companyId = userDoc.data().companyId;
           const companyDoc = await getDoc(doc(db, 'companies', companyId));
           if (companyDoc.exists()) {
-            setCompany({ id: companyDoc.id, ...companyDoc.data() });
+            setCompany({ id: companyDoc.id, ...companyDoc.data() } as Company);
           }
         }
-      } catch (err) {
+      } catch (err: unknown) {
         console.error("Error fetching company data:", err);
       } finally {
         setLoading(false);

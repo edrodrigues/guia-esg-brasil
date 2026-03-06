@@ -8,11 +8,14 @@ import {
   BarChart3, 
   ClipboardCheck, 
   Download,
-  LeafyGreen
+  LeafyGreen,
+  LogOut
 } from 'lucide-react';
 import { Button } from '../ui/Button';
+import { useAuth } from '../../context/useAuth';
 
 export const Sidebar: React.FC = () => {
+  const { signOut } = useAuth();
   const navItems = [
     { icon: LayoutDashboard, label: 'Início', path: '/dashboard' },
     { icon: ClipboardCheck, label: 'Diagnóstico', path: '/diagnostic' },
@@ -52,11 +55,18 @@ export const Sidebar: React.FC = () => {
         ))}
       </nav>
 
-      <div className="p-4 border-t border-slate-800">
+      <div className="p-4 border-t border-slate-800 space-y-2">
         <Button variant="chunky" className="w-full gap-2">
           <Download size={18} />
           <span>Exportar Dados</span>
         </Button>
+        <button 
+          onClick={() => signOut()}
+          className="w-full flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-black uppercase text-xs tracking-widest text-slate-400 hover:bg-rose-500/10 hover:text-rose-500"
+        >
+          <LogOut size={18} />
+          <span>Sair da Conta</span>
+        </button>
       </div>
     </aside>
   );

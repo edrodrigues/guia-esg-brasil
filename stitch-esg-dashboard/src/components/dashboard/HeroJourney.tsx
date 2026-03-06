@@ -1,5 +1,5 @@
 import React from 'react';
-import { Trophy, Star, Shield, Zap, Crown, CheckCircle2, Lock } from 'lucide-react';
+import { Trophy, Star, Shield, Zap, Crown, Lock } from 'lucide-react';
 import { Card } from '../ui/Card';
 
 interface HeroJourneyProps {
@@ -21,10 +21,6 @@ export const HeroJourney: React.FC<HeroJourneyProps> = ({ currentXP }) => {
   
   const currentLevel = LEVELS[currentLevelIndex];
   const nextLevel = LEVELS[currentLevelIndex + 1];
-  
-  const progress = nextLevel 
-    ? ((currentXP - currentLevel.minXP) / (nextLevel.minXP - currentLevel.minXP)) * 100
-    : 100;
 
   return (
     <Card variant="chunky" className="mb-8">

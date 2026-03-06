@@ -4,9 +4,9 @@ import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { EvolutionChart } from '../components/dashboard/EvolutionChart';
 import { RecentMissions } from '../components/dashboard/RecentMissions';
 import { HeroJourney } from '../components/dashboard/HeroJourney';
-import { LevelUpModal } from '../components/dashboard/LevelUpModal';
+import { LevelUpModal, type Particle } from '../components/dashboard/LevelUpModal';
 import { Leaf, Users, Gavel, TrendingUp, TrendingDown, PlusCircle, Mail, CloudSync, Zap } from 'lucide-react';
-import { useAuth } from '../context/AuthContext';
+import { useAuth } from '../context/useAuth';
 import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
 import { db } from '../firebase';
 import { type Company, type Mission } from '../types';
@@ -20,6 +20,7 @@ export const DashboardPage: React.FC = () => {
   // Level Up State
   const [showLevelUp, setShowLevelUp] = useState(false);
   const [newLevelInfo, setNewLevelInfo] = useState({ level: 1, name: 'Elementar' });
+  const [particles, setParticles] = useState<Particle[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -83,6 +84,14 @@ export const DashboardPage: React.FC = () => {
     setCompany({ ...company, currentXP: newXP });
     
     if (newLevel.level > oldLevel) {
+      // Generate stable particles for the modal
+      const newParticles = [...Array(20)].map((_, i) => ({
+        id: i,
+        left: `${Math.random() * 100}%`,
+        top: `${Math.random() * 100}%`,
+        delay: `${Math.random() * 2}s`,
+      }));
+      setParticles(newParticles);
       setNewLevelInfo(newLevel);
       setShowLevelUp(true);
     }
@@ -105,6 +114,7 @@ export const DashboardPage: React.FC = () => {
         onClose={() => setShowLevelUp(false)} 
         level={newLevelInfo.level} 
         levelName={newLevelInfo.name} 
+        particles={particles}
       />
 
       <div className="mb-8">
