@@ -9,20 +9,21 @@ import {
   ClipboardCheck, 
   Download,
   LeafyGreen,
-  LogOut
+  LogOut,
+  Lock
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/useAuth';
 
 export const Sidebar: React.FC = () => {
-  const { signOut } = useAuth();
+  const { signOut, isDiagnosticCompleted } = useAuth();
   const navItems = [
-    { icon: LayoutDashboard, label: 'Início', path: '/dashboard' },
-    { icon: ClipboardCheck, label: 'Diagnóstico', path: '/diagnostic' },
-    { icon: Leaf, label: 'Ambiental', path: '/environmental' },
-    { icon: Users, label: 'Social', path: '/social' },
-    { icon: Gavel, label: 'Governança', path: '/governance' },
-    { icon: BarChart3, label: 'Relatórios', path: '/reports' },
+    { icon: LayoutDashboard, label: 'Início', path: '/dashboard', protected: false },
+    { icon: ClipboardCheck, label: 'Diagnóstico', path: '/diagnostic', protected: false },
+    { icon: Leaf, label: 'Ambiental', path: '/environmental', protected: true },
+    { icon: Users, label: 'Social', path: '/social', protected: true },
+    { icon: Gavel, label: 'Governança', path: '/governance', protected: true },
+    { icon: BarChart3, label: 'Relatórios', path: '/reports', protected: false },
   ];
 
   return (
@@ -38,21 +39,37 @@ export const Sidebar: React.FC = () => {
       </div>
 
       <nav className="flex-1 px-4 space-y-2 mt-4">
-        {navItems.map((item) => (
-          <NavLink
-            key={item.path}
-            to={item.path}
-            className={({ isActive }) => `
-              flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-black uppercase text-xs tracking-widest
-              ${isActive 
-                ? 'bg-primary text-slate-900 chunky-shadow translate-x-1' 
-                : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
-            `}
-          >
-            <item.icon size={18} />
-            <span>{item.label}</span>
-          </NavLink>
-        ))}
+        {navItems.map((item) => {
+          const isLocked = item.protected && !isDiagnosticCompleted;
+          
+          return (
+            <NavLink
+              key={item.path}
+              to={isLocked ? '#' : item.path}
+              onClick={(e) => {
+                if (isLocked) {
+                  e.preventDefault();
+                }
+              }}
+              className={({ isActive }) => `
+                flex items-center gap-3 px-4 py-3 rounded-xl transition-all font-black uppercase text-xs tracking-widest
+                ${isActive && !isLocked
+                  ? 'bg-primary text-slate-900 chunky-shadow translate-x-1' 
+                  : isLocked 
+                    ? 'text-slate-600 cursor-not-allowed opacity-50'
+                    : 'text-slate-400 hover:bg-slate-800 hover:text-white'}
+              `}
+            >
+              {isLocked ? <Lock size={18} /> : <item.icon size={18} />}
+              <span>{item.label}</span>
+              {isLocked && (
+                <span className="ml-auto text-[8px] bg-slate-800 text-slate-500 px-1.5 py-0.5 rounded border border-slate-700">
+                  Bloqueado
+                </span>
+              )}
+            </NavLink>
+          );
+        })}
       </nav>
 
       <div className="p-4 border-t border-slate-800 space-y-2">

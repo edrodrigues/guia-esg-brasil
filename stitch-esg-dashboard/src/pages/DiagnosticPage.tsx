@@ -10,7 +10,7 @@ import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, Time
 import { Check, Lightbulb, Rocket, ChevronRight, ChevronLeft, Sparkles, AlertCircle } from 'lucide-react';
 
 export const DiagnosticPage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, refreshAuth } = useAuth();
   const navigate = useNavigate();
   
   const [currentStep, setCurrentStep] = useState(0);
@@ -164,6 +164,8 @@ export const DiagnosticPage: React.FC = () => {
         level: newLevel,
         lastDiagnosticDate: Timestamp.now()
       });
+
+      if (refreshAuth) await refreshAuth();
 
       navigate('/dashboard');
     } catch (err) {
