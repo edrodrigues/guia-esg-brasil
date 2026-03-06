@@ -10,7 +10,8 @@ import {
   Download,
   LeafyGreen,
   LogOut,
-  Lock
+  Lock,
+  Trophy
 } from 'lucide-react';
 import { Button } from '../ui/Button';
 import { useAuth } from '../../context/useAuth';
@@ -24,6 +25,7 @@ export const Sidebar: React.FC = () => {
     { icon: Users, label: 'Social', path: '/social', protected: true },
     { icon: Gavel, label: 'Governança', path: '/governance', protected: true },
     { icon: BarChart3, label: 'Relatórios', path: '/reports', protected: false },
+    { icon: Trophy, label: 'Ranking', path: '/ranking', protected: false },
   ];
 
   return (

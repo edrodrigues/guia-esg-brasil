@@ -10,6 +10,7 @@ import { ProfilePage } from './pages/ProfilePage';
 import { LandingPage } from './pages/LandingPage';
 import { DiagnosticPage } from './pages/DiagnosticPage';
 import { ReportsPage } from './pages/ReportsPage';
+import { RankingPage } from './pages/RankingPage';
 import { EnvironmentalPage } from './pages/EnvironmentalPage';
 import { SocialPage } from './pages/SocialPage';
 import { GovernancePage } from './pages/GovernancePage';
@@ -89,6 +90,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <ReportsPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/ranking" 
+        element={
+          <ProtectedRoute>
+            <RankingPage />
           </ProtectedRoute>
         } 
       />
