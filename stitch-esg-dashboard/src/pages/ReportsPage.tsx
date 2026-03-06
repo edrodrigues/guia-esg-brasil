@@ -16,7 +16,7 @@ import {
   FileDown, 
   Database, 
   Stars, 
-  Eco, 
+  Leaf, 
   Zap, 
   Recycle, 
   Trophy, 
@@ -185,7 +185,7 @@ export const ReportsPage: React.FC = () => {
                     radius={[10, 10, 10, 10]} 
                     barSize={30}
                   >
-                    {carbonData.map((entry, index) => (
+                    {carbonData.map((_, index) => (
                       <Cell 
                         key={`cell-${index}`} 
                         fill={index === 5 ? '#20B2AA' : '#20B2AA33'} 
@@ -294,7 +294,7 @@ export const ReportsPage: React.FC = () => {
           <div className="grid grid-cols-2 gap-6 h-full">
             {[
               { icon: Recycle, label: 'Taxa de Reciclagem', value: '78%', trend: '+5% desde o Q1' },
-              { icon: Eco, label: 'Ecoeficiência', value: '92/100', trend: 'Líder do Setor' },
+              { icon: Leaf, label: 'Ecoeficiência', value: '92/100', trend: 'Líder do Setor' },
               { icon: Users, label: 'Engajamento', value: '84%', trend: 'Score de Clima' },
               { icon: Scale, label: 'Compliance', value: '100%', trend: 'Zero Incidentes' },
             ].map((stat, i) => (

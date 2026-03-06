@@ -91,7 +91,7 @@ export const SocialPage: React.FC = () => {
           </div>
           <p className="text-3xl font-black text-slate-900 dark:text-slate-100">88%</p>
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-wider mt-1">Colaboradores Treinados</p>
-        </div>
+        </Card>
       </div>
 
       <Card title="Próximas Missões Sociais">

@@ -91,7 +91,7 @@ export const EnvironmentalPage: React.FC = () => {
           </div>
           <p className="text-3xl font-black text-slate-900 dark:text-slate-100">92%</p>
           <p className="text-slate-400 text-[10px] font-black uppercase tracking-wider mt-1">Taxa de Reciclagem</p>
-        </div>
+        </Card>
       </div>
 
       <Card title="Próximas Missões Ambientais">
