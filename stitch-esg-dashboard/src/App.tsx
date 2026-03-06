@@ -8,6 +8,7 @@ import { DashboardPage } from './pages/DashboardPage';
 import { ProfilePage } from './pages/ProfilePage';
 import { LandingPage } from './pages/LandingPage';
 import { DiagnosticPage } from './pages/DiagnosticPage';
+import { ReportsPage } from './pages/ReportsPage';
 
 // Helper component to redirect logged-in users away from auth pages
 const PublicRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -49,6 +50,14 @@ function AppRoutes() {
         element={
           <ProtectedRoute>
             <DiagnosticPage />
+          </ProtectedRoute>
+        } 
+      />
+      <Route 
+        path="/reports" 
+        element={
+          <ProtectedRoute>
+            <ReportsPage />
           </ProtectedRoute>
         } 
       />
