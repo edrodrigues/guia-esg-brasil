@@ -5,14 +5,11 @@ import {
   ArrowRight, 
   ShieldCheck, 
   Users, 
-  Globe, 
   Zap,
-  CheckCircle2,
   Mail,
   Linkedin,
   Instagram,
-  Twitter,
-  ExternalLink
+  Twitter
 } from 'lucide-react';
 import { Button } from '../components/ui/Button';
 
