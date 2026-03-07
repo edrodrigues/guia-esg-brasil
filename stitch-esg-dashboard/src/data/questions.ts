@@ -46,7 +46,7 @@ export const diagnosticQuestions: Question[] = [
       },
       {
         "label": "Serviço",
-        "value": 1,
+        "value": "Serviço",
         "points": 1,
         "weight": 1
       }
@@ -68,6 +68,39 @@ export const diagnosticQuestions: Question[] = [
       {
         "label": "Serviços",
         "value": "servicos",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "form_1.6",
+    "category": "form",
+    "subcategory": "ATIVIDADE",
+    "text": "ATIVIDADE",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Design e fabricação",
+        "value": "design_fabricacao",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Venda e distribuição",
+        "value": "venda_distribuicao",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "E-commerce",
+        "value": "ecommerce",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Outros.",
+        "value": "outros",
         "points": 0,
         "weight": 1
       }
@@ -378,32 +411,32 @@ export const diagnosticQuestions: Question[] = [
     "options": [
       {
         "label": "0 - 10 funcionários",
-        "value": 1,
+        "value": "0-10",
         "points": 1,
         "weight": 1,
         "message": "Conhecer o porte da empresa é importante pois auxilia a mapear suas responsabilidades e compromissos com a comunidade."
       },
       {
         "label": "10 - 50 funcionários",
-        "value": 1,
+        "value": "10-50",
         "points": 1,
         "weight": 1
       },
       {
         "label": "50 - 100 funcionários",
-        "value": 1,
+        "value": "50-100",
         "points": 1,
         "weight": 1
       },
       {
         "label": "100 - 200 funcionários",
-        "value": 1,
+        "value": "100-200",
         "points": 1,
         "weight": 1
       },
       {
         "label": "acima de 200 funcionários",
-        "value": 1,
+        "value": "acima-200",
         "points": 1,
         "weight": 1
       }
