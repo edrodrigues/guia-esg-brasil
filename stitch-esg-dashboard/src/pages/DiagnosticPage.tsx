@@ -136,36 +136,6 @@ export const DiagnosticPage: React.FC = () => {
     debouncedSave(newAnswers);
   };
 
-  const handleNext = useCallback(async () => {
-    if (currentStep < visibleQuestions.length - 1) {
-      setCurrentStep(prev => prev + 1);
-    } else {
-      finishDiagnostic();
-    }
-  }, [currentStep, visibleQuestions.length, finishDiagnostic]);
-
-  const handlePrev = () => {
-    if (currentStep > 0) {
-      setCurrentStep(prev => prev - 1);
-    }
-  };
-
-  const handleKeyDown = useCallback((e: React.KeyboardEvent | KeyboardEvent) => {
-    if (e.key === 'Enter') {
-      // Prevent default to avoid form submission if any
-      if (answers[currentVisibleQuestion?.id] !== undefined) {
-        handleNext();
-      }
-    }
-  }, [answers, currentVisibleQuestion, handleNext]);
-
-  useEffect(() => {
-    window.addEventListener('keydown', handleKeyDown);
-    return () => {
-      window.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [handleKeyDown]);
-
   const finishDiagnostic = useCallback(async () => {
     if (!user || !diagnosticId || !companyId) return;
     
@@ -231,7 +201,37 @@ export const DiagnosticPage: React.FC = () => {
       console.error("Error finishing diagnostic:", err);
       setIsFinishing(false);
     }
-  }, [user, diagnosticId, companyId, answers, saveProgress, refreshAuth, navigate]);;
+  }, [user, diagnosticId, companyId, answers, saveProgress, refreshAuth, navigate]);
+
+  const handleNext = useCallback(async () => {
+    if (currentStep < visibleQuestions.length - 1) {
+      setCurrentStep(prev => prev + 1);
+    } else {
+      finishDiagnostic();
+    }
+  }, [currentStep, visibleQuestions.length, finishDiagnostic]);
+
+  const handlePrev = () => {
+    if (currentStep > 0) {
+      setCurrentStep(prev => prev - 1);
+    }
+  };
+
+  const handleKeyDown = useCallback((e: React.KeyboardEvent | KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      // Prevent default to avoid form submission if any
+      if (answers[currentVisibleQuestion?.id] !== undefined) {
+        handleNext();
+      }
+    }
+  }, [answers, currentVisibleQuestion, handleNext]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
 
   const navigateToCategory = (cat: 'form' | 'environmental' | 'social' | 'governance') => {
     const visibleIndex = visibleQuestions.findIndex(q => q.category === cat);
@@ -291,10 +291,7 @@ export const DiagnosticPage: React.FC = () => {
                 <Rocket size={20} /> Próximo Passo!
               </h4>
               <p className="text-slate-900/80 text-xs font-bold uppercase tracking-wide leading-relaxed">
-                {currentCategory === 'form' 
-                  ? "Conclua a sessão de Cadastro para ganhar 500 de XP e avançar para a aba Ambiental."
-                  : `Continue na seção ${currentCategory === 'environmental' ? 'Ambiental' : currentCategory === 'social' ? 'Social' : 'Governança'} e conquiste mais XP.`
-                }
+                Continue na seção {currentCategory === 'environmental' ? 'Ambiental' : currentCategory === 'social' ? 'Social' : 'Governança'} e conquiste mais XP.
               </p>
             </div>
             <Button 
@@ -437,7 +434,7 @@ export const DiagnosticPage: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-2">Salvo com Sucesso!</h3>
                   <p className="text-slate-500 dark:text-slate-400 font-bold uppercase text-[10px] tracking-widest leading-relaxed">
-                    Seu questionário foi registrado. Desbloqueando trilha Ambiental...
+                    Seu diagnóstico foi registrado. Desbloqueando trilha Ambiental...
                   </p>
                 </div>
               </div>
