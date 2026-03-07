@@ -20,7 +20,7 @@ export const Sidebar: React.FC = () => {
   const { signOut, isDiagnosticCompleted } = useAuth();
   const navItems = [
     { icon: LayoutDashboard, label: 'Início', path: '/dashboard', protected: false },
-    { icon: ClipboardCheck, label: 'Diagnóstico', path: '/diagnostic', protected: false },
+    { icon: ClipboardCheck, label: 'Questionário', path: '/diagnostic', protected: false },
     { icon: Leaf, label: 'Ambiental', path: '/environmental', protected: true },
     { icon: Users, label: 'Social', path: '/social', protected: true },
     { icon: Gavel, label: 'Governança', path: '/governance', protected: true },

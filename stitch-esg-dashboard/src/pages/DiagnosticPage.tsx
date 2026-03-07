@@ -180,9 +180,13 @@ export const DiagnosticPage: React.FC = () => {
 
       const companyRef = doc(db, 'companies', companyId);
 
+      const companyDoc = await getDoc(companyRef);
+      const currentXP = companyDoc.exists() ? (companyDoc.data().currentXP || 0) : 0;
+
       const companyData: Record<string, unknown> = {
         formData: answers,
-        lastDiagnosticDate: Timestamp.now()
+        lastDiagnosticDate: Timestamp.now(),
+        currentXP: currentXP + 500
       };
 
       if (answers['form_1.1']) {
@@ -227,10 +231,10 @@ export const DiagnosticPage: React.FC = () => {
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="mb-8">
           <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter uppercase">
-            Cadastro da Empresa
+            Questionário Inicial
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-lg font-medium">
-            Preencha os dados da sua empresa para continuar com o diagnóstico ESG.
+            Preencha os dados da sua empresa para continuar com o questionário ESG.
           </p>
         </div>
 
@@ -409,7 +413,7 @@ export const DiagnosticPage: React.FC = () => {
                   </div>
                   <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-2">Salvo com Sucesso!</h3>
                   <p className="text-slate-500 dark:text-slate-400 font-bold uppercase text-[10px] tracking-widest leading-relaxed">
-                    Seu diagnóstico foi registrado. Desbloqueando trilha Ambiental...
+                    Seu questionário foi registrado. Desbloqueando trilha Ambiental...
                   </p>
                 </div>
               </div>

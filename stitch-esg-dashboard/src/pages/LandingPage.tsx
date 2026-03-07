@@ -154,7 +154,7 @@ export const LandingPage: React.FC = () => {
                 <li><a href="#" className="hover:text-primary transition-colors">Ambiental (E)</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Social (S)</a></li>
                 <li><a href="#" className="hover:text-primary transition-colors">Governança (G)</a></li>
-                <li><a href="#" className="hover:text-primary transition-colors">Diagnóstico</a></li>
+                <li><a href="#" className="hover:text-primary transition-colors">Questionário</a></li>
               </ul>
             </div>
 
