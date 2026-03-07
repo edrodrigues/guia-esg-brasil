@@ -56,116 +56,318 @@ export const diagnosticQuestions: Question[] = [
     "id": "form_1.5",
     "category": "form",
     "subcategory": "CATEGORIA",
-    "text": "Tipo de Produto/Serviço",
+    "text": "A sua empresa oferece majoritariamente produtos ou serviços?",
     "inputType": "radio",
     "options": [
       {
-        "label": "Móveis em madeira",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "Móveis Planejados",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "Estofados",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "Móveis de metal",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "Outros.",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      }
-    ]
-  },
-  {
-    "id": "form_1.6",
-    "category": "form",
-    "subcategory": "CATEGORIA",
-    "text": "ATIVIDADE",
-    "inputType": "radio",
-    "options": [
-      {
-        "label": "Design e fabricação",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "Venda e distribuição",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "E-commerce",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      },
-      {
-        "label": "Outros.",
-        "value": 1,
-        "points": 1,
-        "weight": 1
-      }
-    ]
-  },
-  {
-    "id": "form_1.6 a",
-    "category": "form",
-    "subcategory": "CATEGORIA",
-    "text": "Sobre a segurança dos dados em seu ambiente digital.",
-    "inputType": "radio",
-    "options": [
-      {
-        "label": "Não temos qualquer solução de segurança de dados.",
-        "value": "Não temos qualquer solução de segurança de dados.",
+        "label": "Produtos",
+        "value": "produtos",
         "points": 0,
         "weight": 1
       },
       {
-        "label": "Description of policies and practices relating to targeted advertising and user privacy",
-        "value": "Description of policies and practices relating to targeted advertising and user privacy",
-        "points": 0,
-        "weight": 1
-      },
-      {
-        "label": "LGPD",
-        "value": "LGPD",
+        "label": "Serviços",
+        "value": "servicos",
         "points": 0,
         "weight": 1
       }
     ]
   },
   {
-    "id": "form_1.6 b",
+    "id": "form_1.6_p",
     "category": "form",
     "subcategory": "CATEGORIA",
-    "text": "Embalagem.",
-    "inputType": "radio",
-    "options": []
+    "text": "Selecione a Classe de Nice (Produtos):",
+    "inputType": "select",
+    "dependsOn": {
+      "questionId": "form_1.5",
+      "value": "produtos"
+    },
+    "options": [
+      {
+        "label": "Classe 1 - Produtos químicos",
+        "value": "Classe 1 - Produtos químicos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 2 - Tintas e vernizes",
+        "value": "Classe 2 - Tintas e vernizes",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 3 - Cosméticos e produtos de limpeza",
+        "value": "Classe 3 - Cosméticos e produtos de limpeza",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 4 - Graxas e lubrificantes",
+        "value": "Classe 4 - Graxas e lubrificantes",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 5 - Produtos farmacêuticos",
+        "value": "Classe 5 - Produtos farmacêuticos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 6 - Metais comuns",
+        "value": "Classe 6 - Metais comuns",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 7 - Máquinas e ferramentas",
+        "value": "Classe 7 - Máquinas e ferramentas",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 8 - Ferramentas manuais",
+        "value": "Classe 8 - Ferramentas manuais",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 9 - Aparelhos científicos e eletrônicos",
+        "value": "Classe 9 - Aparelhos científicos e eletrônicos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 10 - Aparelhos médicos",
+        "value": "Classe 10 - Aparelhos médicos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 11 - Aparelhos de iluminação/aquecimento",
+        "value": "Classe 11 - Aparelhos de iluminação/aquecimento",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 12 - Veículos",
+        "value": "Classe 12 - Veículos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 13 - Armas de fogo",
+        "value": "Classe 13 - Armas de fogo",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 14 - Metais preciosos e joalheria",
+        "value": "Classe 14 - Metais preciosos e joalheria",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 15 - Instrumentos musicais",
+        "value": "Classe 15 - Instrumentos musicais",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 16 - Papel e material de escritório",
+        "value": "Classe 16 - Papel e material de escritório",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 17 - Borracha e plásticos",
+        "value": "Classe 17 - Borracha e plásticos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 18 - Couro e imitações",
+        "value": "Classe 18 - Couro e imitações",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 19 - Materiais de construção (não metálicos)",
+        "value": "Classe 19 - Materiais de construção (não metálicos)",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 20 - Móveis e produtos de madeira",
+        "value": "Classe 20 - Móveis e produtos de madeira",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 21 - Utensílios domésticos",
+        "value": "Classe 21 - Utensílios domésticos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 22 - Cordas e fibras",
+        "value": "Classe 22 - Cordas e fibras",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 23 - Fios têxteis",
+        "value": "Classe 23 - Fios têxteis",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 24 - Tecidos",
+        "value": "Classe 24 - Tecidos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 25 - Vestuário e calçados",
+        "value": "Classe 25 - Vestuário e calçados",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 26 - Rendas e bordados",
+        "value": "Classe 26 - Rendas e bordados",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 27 - Tapetes e revestimentos",
+        "value": "Classe 27 - Tapetes e revestimentos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 28 - Jogos e artigos esportivos",
+        "value": "Classe 28 - Jogos e artigos esportivos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 29 - Alimentos de origem animal",
+        "value": "Classe 29 - Alimentos de origem animal",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 30 - Café, chá e panificação",
+        "value": "Classe 30 - Café, chá e panificação",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 31 - Produtos agrícolas e animais vivos",
+        "value": "Classe 31 - Produtos agrícolas e animais vivos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 32 - Cervejas e bebidas não alcoólicas",
+        "value": "Classe 32 - Cervejas e bebidas não alcoólicas",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 33 - Bebidas alcoólicas",
+        "value": "Classe 33 - Bebidas alcoólicas",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 34 - Tabaco e artigos para fumantes",
+        "value": "Classe 34 - Tabaco e artigos para fumantes",
+        "points": 0,
+        "weight": 1
+      }
+    ]
   },
   {
-    "id": "form_1.6 c",
+    "id": "form_1.6_s",
     "category": "form",
     "subcategory": "CATEGORIA",
-    "text": "Distribuição.",
-    "inputType": "radio",
-    "options": []
+    "text": "Selecione a Classe de Nice (Serviços):",
+    "inputType": "select",
+    "dependsOn": {
+      "questionId": "form_1.5",
+      "value": "servicos"
+    },
+    "options": [
+      {
+        "label": "Classe 35 - Propaganda e gestão de negócios",
+        "value": "Classe 35 - Propaganda e gestão de negócios",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 36 - Seguros e negócios financeiros",
+        "value": "Classe 36 - Seguros e negócios financeiros",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 37 - Construção e reparação",
+        "value": "Classe 37 - Construção e reparação",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 38 - Telecomunicações",
+        "value": "Classe 38 - Telecomunicações",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 39 - Transporte e armazenamento",
+        "value": "Classe 39 - Transporte e armazenamento",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 40 - Tratamento de materiais",
+        "value": "Classe 40 - Tratamento de materiais",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 41 - Educação e entretenimento",
+        "value": "Classe 41 - Educação e entretenimento",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 42 - Serviços científicos e tecnológicos",
+        "value": "Classe 42 - Serviços científicos e tecnológicos",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 43 - Serviços de alimentação e hospedagem",
+        "value": "Classe 43 - Serviços de alimentação e hospedagem",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 44 - Serviços médicos e veterinários",
+        "value": "Classe 44 - Serviços médicos e veterinários",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Classe 45 - Serviços jurídicos e sociais",
+        "value": "Classe 45 - Serviços jurídicos e sociais",
+        "points": 0,
+        "weight": 1
+      }
+    ]
   },
   {
     "id": "form_1.7",
