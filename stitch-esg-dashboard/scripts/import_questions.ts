@@ -66,7 +66,7 @@ async function importQuestions() {
   
   // Também atualizar o arquivo local para referência
   const localQuestionsPath = path.join(__dirname, '../src/data/questions.ts');
-  const fileContent = `import { Question } from '../types';
+  const fileContent = `import type { Question } from '../types';
 
 export const diagnosticQuestions: Question[] = ${JSON.stringify(allQuestions, null, 2)};
 `;
