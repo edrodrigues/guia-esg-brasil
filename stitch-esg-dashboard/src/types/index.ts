@@ -1,3 +1,26 @@
+export interface QuestionOption {
+  label: string;
+  value: number | string;
+  points?: number;
+  weight?: number;
+  message?: string;
+  recommendation?: string;
+}
+
+export interface Question {
+  id: string;
+  category: string;
+  subcategory?: string;
+  text: string;
+  description?: string;
+  options?: QuestionOption[];
+  inputType?: 'text' | 'number' | 'date' | 'select' | 'radio' | 'checkbox';
+  dependsOn?: {
+    questionId: string;
+    value: string | number;
+  };
+}
+
 export interface ESGScore {
   environmental: number;
   social: number;

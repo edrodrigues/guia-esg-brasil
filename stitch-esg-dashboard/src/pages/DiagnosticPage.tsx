@@ -3,10 +3,10 @@ import { useNavigate } from 'react-router-dom';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
-import { Question } from '../types';
+import type { Question } from '../types';
 import { useAuth } from '../context/useAuth';
 import { db } from '../firebase';
-import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, Timestamp, orderBy } from 'firebase/firestore';
+import { doc, getDoc, setDoc, updateDoc, collection, query, where, getDocs, Timestamp } from 'firebase/firestore';
 import { Check, Lightbulb, Rocket, ChevronRight, ChevronLeft } from 'lucide-react';
 import { calculateESGScore, calculateESGDelta, calculateGoalsFromScores } from '../utils/scoreCalculator';
 
