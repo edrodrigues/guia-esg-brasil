@@ -15,22 +15,27 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const fetchDiagnosticStatus = useCallback(async (uid: string) => {
     try {
+      console.log("AuthContext: Fetching diagnostic status for", uid);
       const userDoc = await getDoc(doc(db, 'users', uid));
       if (userDoc.exists()) {
         const companyId = userDoc.data().companyId;
         const companyDoc = await getDoc(doc(db, 'companies', companyId));
         if (companyDoc.exists()) {
-          // Check if esgScores are not zero or if lastDiagnosticDate exists
           const data = companyDoc.data();
           const completed = !!data.lastDiagnosticDate || 
             (data.esgScores?.environmental > 0 || 
              data.esgScores?.social > 0 || 
              data.esgScores?.governance > 0);
           setIsDiagnosticCompleted(completed);
+          console.log("AuthContext: Diagnostic status:", completed ? "Completed" : "Incomplete");
         }
       }
-    } catch (err) {
-      console.error("Error fetching diagnostic status:", err);
+    } catch (err: any) {
+      if (err.code === 'unavailable' || err.message?.includes('offline')) {
+        console.warn("AuthContext: Firestore is offline. Diagnostic status will be re-checked when online.");
+      } else {
+        console.error("AuthContext: Error fetching diagnostic status:", err);
+      }
     }
   }, []);
 

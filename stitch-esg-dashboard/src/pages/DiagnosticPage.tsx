@@ -84,14 +84,25 @@ export const DiagnosticPage: React.FC = () => {
 
   useEffect(() => {
     const loadDiagnostic = async () => {
-      if (!user) return;
+      if (!user) {
+        console.log("DiagnosticPage: No user yet");
+        return;
+      }
+
+      setLoading(true);
+      console.log("DiagnosticPage: Loading diagnostic for user", user.uid);
 
       try {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
-        if (!userDoc.exists()) return;
+        if (!userDoc.exists()) {
+          console.error("DiagnosticPage: User document not found in Firestore for UID:", user.uid);
+          alert("Erro: Perfil de usuário não encontrado. Por favor, tente sair e entrar novamente.");
+          return;
+        }
 
         const cid = userDoc.data().companyId;
         setCompanyId(cid);
+        console.log("DiagnosticPage: Found companyId:", cid);
 
         const q = query(
           collection(db, 'diagnostics'),
@@ -106,6 +117,7 @@ export const DiagnosticPage: React.FC = () => {
           setDiagnosticId(incompleteDoc.id);
           setAnswers(diagData.responses || {});
           lastSavedRef.current = JSON.stringify(diagData.responses || {});
+          console.log("DiagnosticPage: Found existing diagnostic:", incompleteDoc.id);
 
           const savedAnswers = diagData.responses || {};
           const answeredVisibleCount = visibleQuestions.filter(q => savedAnswers[q.id] !== undefined).length;
@@ -116,7 +128,15 @@ export const DiagnosticPage: React.FC = () => {
           }
         } else {
           // Create new diagnostic if none exists
+          console.log("DiagnosticPage: No existing diagnostic found, creating new one...");
           const newDiagRef = doc(collection(db, 'diagnostics'));
+
+          // Set state immediately to unlock UI even if offline write is pending/fails
+          setDiagnosticId(newDiagRef.id);
+          setAnswers({});
+          setCurrentStep(0);
+          console.log("DiagnosticPage: Created local diagnostic ref:", newDiagRef.id);
+
           await setDoc(newDiagRef, {
             companyId: cid,
             responses: {},
@@ -124,12 +144,16 @@ export const DiagnosticPage: React.FC = () => {
             createdAt: Timestamp.now(),
             lastUpdated: Timestamp.now()
           });
-          setDiagnosticId(newDiagRef.id);
-          setAnswers({});
-          setCurrentStep(0);
+
+          console.log("DiagnosticPage: Successfully saved new diagnostic online:", newDiagRef.id);
         }
-      } catch (err) {
+      } catch (err: any) {
         console.error("Error loading diagnostic:", err);
+        if (err.code === 'unavailable' || err.message?.includes('offline')) {
+          console.warn("DiagnosticPage: Firestore is offline, using cached data if available.");
+        } else {
+          alert("Houve um erro ao conectar com o banco de dados. Verifique sua conexão.");
+        }
       } finally {
         setLoading(false);
       }
@@ -152,9 +176,19 @@ export const DiagnosticPage: React.FC = () => {
   };
 
   const finishDiagnostic = useCallback(async () => {
+    console.log("DiagnosticPage: Attempting to finish diagnostic...", {
+      hasUser: !!user,
+      diagnosticId,
+      companyId
+    });
+
     if (!user || !diagnosticId || !companyId) {
-      console.error("Dados faltantes para finalizar diagnóstico:", { user, diagnosticId, companyId });
-      alert("Não foi possível finalizar o diagnóstico no momento. Faltam dados de conexão com o banco. Recarregue a página e tente novamente.");
+      console.error("Dados faltantes para finalizar diagnóstico:", {
+        userId: user?.uid,
+        diagnosticId,
+        companyId
+      });
+      alert(`Não foi possível finalizar o diagnóstico no momento. Faltam dados de conexão (${!diagnosticId ? 'DiagID' : !companyId ? 'CompID' : 'User'}). Recarregue a página e tente novamente.`);
       return;
     }
 
@@ -216,10 +250,14 @@ export const DiagnosticPage: React.FC = () => {
       setTimeout(() => {
         navigate('/environmental');
       }, 2000);
-    } catch (err) {
+    } catch (err: any) {
       console.error("Error finishing diagnostic:", err);
-      alert("Houve um erro ao salvar seu diagnóstico. Por favor, tente novamente.");
       setIsFinishing(false);
+      if (err.code === 'unavailable' || err.message?.includes('offline')) {
+        alert("Parece que você está offline ou a conexão falhou. Seus dados foram salvos localmente e serão sincronizados quando a internet voltar. Por favor, tente novamente em instantes.");
+      } else {
+        alert("Houve um erro ao salvar seu diagnóstico. Por favor, tente novamente.");
+      }
     }
   }, [user, diagnosticId, companyId, answers, saveProgress, refreshAuth, navigate]);
 
@@ -428,9 +466,8 @@ export const DiagnosticPage: React.FC = () => {
                 </Button>
                 <Button
                   onClick={handleNext}
-                  disabled={answers[currentVisibleQuestion.id] === undefined || isFinishing}
-                  isLoading={isFinishing && !showSuccess}
-                  className={`px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl transition-all duration-300
+                  disabled={answers[currentVisibleQuestion.id] === undefined || answers[currentVisibleQuestion.id] === '' || isFinishing || !diagnosticId}
+                  isLoading={isFinishing && !showSuccess} className={`px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl transition-all duration-300
                     ${showSuccess
                       ? 'bg-emerald-500 text-white shadow-emerald-500/40'
                       : 'shadow-emerald-500/20'}
