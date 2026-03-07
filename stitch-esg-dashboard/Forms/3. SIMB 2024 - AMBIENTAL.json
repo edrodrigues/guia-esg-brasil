@@ -258,7 +258,7 @@
     "category": "environmental",
     "subcategory": "4. ÁGUA E EFLUENTES",
     "text": "Consumo de água no último ano fiscal?",
-    "inputType": "radio",
+    "inputType": "text",
     "options": [
       {
         "label": "Lts",

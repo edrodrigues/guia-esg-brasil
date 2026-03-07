@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { Card } from '../components/ui/Card';
 import { Button } from '../components/ui/Button';
@@ -23,36 +23,140 @@ import {
   Scale,
   Globe
 } from 'lucide-react';
+import { useAuth } from '../context/useAuth';
+import { doc, getDoc } from 'firebase/firestore';
+import { db } from '../firebase';
+import type { Company } from '../types';
+import { getDeltaType } from '../utils/scoreCalculator';
 
-const carbonData = [
-  { month: 'JAN', 'Toneladas': 0.42 },
-  { month: 'FEV', 'Toneladas': 0.38 },
-  { month: 'MAR', 'Toneladas': 0.31 },
-  { month: 'ABR', 'Toneladas': 0.52 },
-  { month: 'MAI', 'Toneladas': 0.28 },
-  { month: 'JUN', 'Toneladas': 0.21 },
-  { month: 'JUL', 'Toneladas': 0.35 },
-  { month: 'AGO', 'Toneladas': 0.29 },
-];
-
-const regionalData = [
-  { name: 'Sudeste', value: 45 },
-  { name: 'Sul', value: 25 },
-  { name: 'Centro-Oeste', value: 15 },
-  { name: 'Norte/NE', value: 15 },
-];
-
-const dataFormatter = (number: number) => `${Intl.NumberFormat('us').format(number).toString()} t`;
+const dataFormatter = (number: number) => `${Intl.NumberFormat('pt-BR').format(number).toString()} t`;
 
 export const ReportsPage: React.FC = () => {
+  const { user } = useAuth();
   const [activeTab, setActiveTab] = useState('environmental');
+  const [company, setCompany] = useState<Company | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchCompany = async () => {
+      if (!user) return;
+      try {
+        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        if (userDoc.exists()) {
+          const companyId = userDoc.data().companyId;
+          const companyDoc = await getDoc(doc(db, 'companies', companyId));
+          if (companyDoc.exists()) {
+            setCompany({ id: companyDoc.id, ...companyDoc.data() } as Company);
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching company for reports:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchCompany();
+  }, [user]);
+
+  const formData = useMemo(() => 
+    (company as unknown as { formData?: Record<string, string | number | (string | number)[]> })?.formData || {}, 
+    [company]
+  );
+
+  // Mapeamento Dinâmico
+  const reportsData = useMemo(() => {
+    // Carbono
+    // Tenta pegar os campos individuais (0, 1, 2) ou o campo total se for um só
+    const escopo1 = Number(formData['environmental_6.2_0']) || 0;
+    const escopo2 = Number(formData['environmental_6.2_1']) || 0;
+    const escopo3 = Number(formData['environmental_6.2_2']) || 0;
+    
+    let totalCarbon = escopo1 + escopo2 + escopo3;
+    if (totalCarbon === 0 && formData['environmental_6.2']) {
+      totalCarbon = Number(formData['environmental_6.2']) || 0;
+    }
+
+    // Energia Renovável
+    const energyValue = String(formData['environmental_3.4'] || '');
+    const energyMap: Record<string, string> = {
+      '1': '8%',
+      '2': '10%',
+      '3': '15%',
+      '4': '20%',
+      '5': '55%'
+    };
+    const renewableEnergy = energyMap[energyValue] || '0%';
+
+    // Resíduos
+    const wasteValue = String(formData['environmental_5.3'] || '');
+    const wasteMap: Record<string, string> = {
+      '1': '15%',
+      '2': '30%',
+      '3': '55%',
+      '4': '80%',
+      '5': '95%'
+    };
+    const wasteDiverted = wasteMap[wasteValue] || '0%';
+
+    // Regional
+    const state = String(formData['form_1.9'] || '');
+    const sudeste = ['SP', 'RJ', 'MG', 'ES'];
+    const sul = ['PR', 'SC', 'RS'];
+    const centroOeste = ['MS', 'MT', 'GO', 'DF'];
+    
+    let region = 'Outros';
+    if (sudeste.includes(state)) region = 'Sudeste';
+    else if (sul.includes(state)) region = 'Sul';
+    else if (centroOeste.includes(state)) region = 'Centro-Oeste';
+    else if (state) region = 'Norte/NE';
+
+    const regionalData = [
+      { name: 'Sudeste', value: region === 'Sudeste' ? 100 : 0 },
+      { name: 'Sul', value: region === 'Sul' ? 100 : 0 },
+      { name: 'Centro-Oeste', value: region === 'Centro-Oeste' ? 100 : 0 },
+      { name: 'Norte/NE', value: region === 'Norte/NE' ? 100 : 0 },
+    ].filter(d => d.value > 0);
+
+    if (regionalData.length === 0) {
+      regionalData.push({ name: 'Não informado', value: 100 });
+    }
+
+    // Carbon Chart Simulation
+    const monthsList = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO'];
+    const carbonHistory = monthsList.map((m) => ({
+      month: m,
+      'Toneladas': totalCarbon > 0 
+        ? Math.max(0.1, (totalCarbon / 8) * (1 + (Math.random() * 0.4 - 0.2)))
+        : 0
+    }));
+
+    return {
+      totalCarbon,
+      renewableEnergy,
+      wasteDiverted,
+      regionalData,
+      carbonHistory,
+      escopo1,
+      escopo2,
+      escopo3
+    };
+  }, [formData]);
 
   const tabs = [
     { id: 'environmental', label: 'Meio Ambiente' },
     { id: 'social', label: 'Social' },
     { id: 'governance', label: 'Governança' },
-    { id: 'supply', label: 'Suprimentos' },
   ];
+
+  if (loading) {
+    return (
+      <DashboardLayout>
+        <div className="flex items-center justify-center h-64">
+          <div className="w-8 h-8 border-4 border-primary border-t-transparent rounded-full animate-spin"></div>
+        </div>
+      </DashboardLayout>
+    );
+  }
 
   return (
     <DashboardLayout>
@@ -62,23 +166,23 @@ export const ReportsPage: React.FC = () => {
           <div className="max-w-2xl">
             <div className="flex items-center gap-2 text-primary font-black text-sm uppercase tracking-widest mb-2">
               <Stars size={16} className="text-primary" />
-              Desempenho Anual
+              Relatório Personalizado
             </div>
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 dark:text-white leading-tight">
-              Relatório de Impacto ESG 2023
+              Impacto ESG: {company?.name || 'Sua Empresa'}
             </h1>
             <p className="mt-4 text-slate-500 dark:text-slate-400 text-lg leading-relaxed font-medium">
-              Uma jornada visual pelas nossas pegadas ambientais, iniciativas sociais e padrões de governança em todo o Brasil.
+              Análise dinâmica baseada no seu diagnóstico mais recente. Esta página reflete seus dados reais de sustentabilidade.
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
-            <Button variant="outline" className="gap-2 border-2 px-5 py-6 rounded-2xl h-auto">
+            <Button variant="outline" className="gap-2 border-2 px-5 py-6 rounded-2xl h-auto" onClick={() => window.print()}>
               <Database size={18} />
-              Dados CSV
+              Imprimir PDF
             </Button>
             <Button className="gap-2 px-6 py-6 rounded-2xl h-auto shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
               <FileDown size={18} />
-              Baixar Livro de Impacto
+              Exportar Livro
             </Button>
           </div>
         </div>
@@ -105,13 +209,13 @@ export const ReportsPage: React.FC = () => {
             <div className="absolute -top-4 -right-4 p-6 opacity-10 group-hover:opacity-20 transition-opacity rotate-12">
               <Globe size={120} className="text-primary" />
             </div>
-            <p className="text-primary font-black uppercase text-[10px] tracking-[0.2em] mb-2">Missão 01</p>
-            <p className="text-slate-500 dark:text-slate-400 font-bold mb-1">Redução de Carbono</p>
+            <p className="text-primary font-black uppercase text-[10px] tracking-[0.2em] mb-2">Emissões</p>
+            <p className="text-slate-500 dark:text-slate-400 font-bold mb-1">CO2e Total</p>
             <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-4">
-              1.240 <span className="text-lg font-bold text-slate-400 font-mono text-xs uppercase">Toneladas</span>
+              {reportsData.totalCarbon.toLocaleString('pt-BR')} <span className="text-lg font-bold text-slate-400 font-mono text-xs uppercase">t</span>
             </h3>
-            <BadgeDelta deltaType="moderateIncrease" className="font-black uppercase text-[10px]">
-              +12.4% vs ano anterior
+            <BadgeDelta deltaType={getDeltaType(company?.esgDelta?.environmental || 0)} className="font-black uppercase text-[10px]">
+              {company?.esgDelta?.environmental ? `${company.esgDelta.environmental}% vs anterior` : 'Dados Iniciais'}
             </BadgeDelta>
           </Card>
 
@@ -119,11 +223,11 @@ export const ReportsPage: React.FC = () => {
             <div className="absolute -top-4 -right-4 p-6 opacity-10 group-hover:opacity-20 transition-opacity -rotate-12">
               <Zap size={120} className="text-primary" />
             </div>
-            <p className="text-primary font-black uppercase text-[10px] tracking-[0.2em] mb-2">Missão 02</p>
-            <p className="text-slate-500 dark:text-slate-400 font-bold mb-1">Energia Renovável</p>
-            <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-4">85.2%</h3>
+            <p className="text-primary font-black uppercase text-[10px] tracking-[0.2em] mb-2">Energia</p>
+            <p className="text-slate-500 dark:text-slate-400 font-bold mb-1">Fontes Sustentáveis</p>
+            <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-4">{reportsData.renewableEnergy}</h3>
             <BadgeDelta deltaType="increase" className="font-black uppercase text-[10px]">
-              Meta: 90% até 2025
+              E-Score: {company?.esgScores.environmental || 0}
             </BadgeDelta>
           </Card>
 
@@ -131,12 +235,12 @@ export const ReportsPage: React.FC = () => {
             <div className="absolute -top-4 -right-4 p-6 opacity-10 group-hover:opacity-20 transition-opacity rotate-45">
               <Recycle size={120} className="text-primary" />
             </div>
-            <p className="text-primary font-black uppercase text-[10px] tracking-[0.2em] mb-2">Missão 03</p>
-            <p className="text-slate-500 dark:text-slate-400 font-bold mb-1">Resíduos Desviados</p>
-            <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-4">92.0%</h3>
+            <p className="text-primary font-black uppercase text-[10px] tracking-[0.2em] mb-2">Resíduos</p>
+            <p className="text-slate-500 dark:text-slate-400 font-bold mb-1">Taxa de Desvio</p>
+            <h3 className="text-4xl font-black text-slate-900 dark:text-white mb-4">{reportsData.wasteDiverted}</h3>
             <div className="inline-flex items-center gap-2 text-emerald-600 font-black px-3 py-1 bg-emerald-50 rounded-lg text-[10px] uppercase tracking-wider border border-emerald-100">
               <Trophy size={12} />
-              Grau A+ de Desempenho
+              Status Ambiental
             </div>
           </Card>
         </div>
@@ -147,19 +251,15 @@ export const ReportsPage: React.FC = () => {
           <Card className="lg:col-span-2 p-2 border-slate-100 dark:border-slate-800 h-full flex flex-col">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">Nossa Jornada de Carbono</h4>
-                <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">kg CO2e por receita em BRL</p>
+                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">Histórico de Carbono (Simulado)</h4>
+                <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">Estimativa mensal baseada no reporte anual</p>
               </div>
-              <select className="bg-slate-50 dark:bg-slate-800 border-2 border-slate-100 dark:border-slate-700 rounded-xl text-[10px] font-black text-slate-500 px-4 py-2 focus:ring-primary uppercase tracking-widest outline-none">
-                <option>Últimos 12 Meses</option>
-                <option>Últimos 2 Anos</option>
-              </select>
             </div>
 
             <div className="h-80 w-full">
               <BarChart
                 className="h-full"
-                data={carbonData}
+                data={reportsData.carbonHistory}
                 index="month"
                 categories={['Toneladas']}
                 colors={['emerald']}
@@ -171,10 +271,10 @@ export const ReportsPage: React.FC = () => {
 
             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
               {[
-                { label: 'Escopo 1', value: '120 tCO2e', color: 'slate' },
-                { label: 'Escopo 2', value: '450 tCO2e', color: 'slate' },
-                { label: 'Escopo 3', value: '670 tCO2e', color: 'slate' },
-                { label: 'Compensação', value: '-200 tCO2e', color: 'primary' },
+                { label: 'Escopo 1', value: `${reportsData.escopo1} t`, color: 'slate' },
+                { label: 'Escopo 2', value: `${reportsData.escopo2} t`, color: 'slate' },
+                { label: 'Escopo 3', value: `${reportsData.escopo3} t`, color: 'slate' },
+                { label: 'Total', value: `${reportsData.totalCarbon} t`, color: 'primary' },
               ].map((item, i) => (
                 <div
                   key={i}
@@ -198,12 +298,24 @@ export const ReportsPage: React.FC = () => {
 
           {/* Qualitative Statements */}
           <div className="flex flex-col gap-6">
-            <Card className="p-2 border-primary/10 bg-primary/5 dark:bg-primary/10 h-full flex flex-col" title="Resumo Estratégico">
+            <Card className="p-2 border-primary/10 bg-primary/5 dark:bg-primary/10 h-full flex flex-col" title="Indicadores de Impacto">
               <div className="space-y-6 flex-1">
                 {[
-                  { icon: Droplets, title: 'Consumo de Água', desc: '22% de redução em processos intensivos' },
-                  { icon: Users, title: 'Inclusão Social', desc: '45% de mulheres em cargos de liderança' },
-                  { icon: Scale, title: 'Ética e Conformidade', desc: '100% da equipe treinada contra corrupção' },
+                  { 
+                    icon: Droplets, 
+                    title: 'Monitoramento de Água', 
+                    desc: formData['environmental_4.1'] === '1' ? 'Ainda não monitorado' : 'Processos monitorados' 
+                  },
+                  { 
+                    icon: Users, 
+                    title: 'Diversidade de Gênero', 
+                    desc: `${formData['social_12.1'] === '5' ? 'Mais de 50%' : 'Em evolução'} mulheres` 
+                  },
+                  { 
+                    icon: Scale, 
+                    title: 'Ética e Compliance', 
+                    desc: formData['governance_15.1'] === '5' ? 'Código de Ética Robusto' : 'Políticas em desenvolvimento' 
+                  },
                 ].map((item, i) => (
                   <div
                     key={i}
@@ -224,7 +336,7 @@ export const ReportsPage: React.FC = () => {
               </div>
 
               <Button variant="outline" className="w-full mt-8 py-4 border-2 border-primary/20 bg-white dark:bg-slate-900 text-primary font-black text-[10px] uppercase tracking-[0.2em] rounded-2xl hover:bg-primary hover:text-white transition-all">
-                Ver Nossa Metodologia
+                Ver Detalhes do Diagnóstico
               </Button>
             </Card>
           </div>
@@ -232,18 +344,18 @@ export const ReportsPage: React.FC = () => {
 
         {/* Regional Impact Map & Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <Card className="p-2 border-slate-100 dark:border-slate-800 flex flex-col" title="Distribuição ESG Regional">
+          <Card className="p-2 border-slate-100 dark:border-slate-800 flex flex-col" title="Presença Regional">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 mt-4">
               <DonutChart
                 className="h-40"
-                data={regionalData}
+                data={reportsData.regionalData}
                 category="value"
                 index="name"
                 colors={['emerald', 'teal', 'amber', 'rose']}
                 showAnimation={true}
               />
               <List className="flex-1">
-                {regionalData.map((item) => (
+                {reportsData.regionalData.map((item) => (
                   <ListItem key={item.name} className="uppercase font-black text-[10px] tracking-widest">
                     <span>{item.name}</span>
                     <span className="font-mono text-sm">{item.value}%</span>
@@ -255,10 +367,30 @@ export const ReportsPage: React.FC = () => {
 
           <div className="grid grid-cols-2 gap-6 h-full">
             {[
-              { icon: Recycle, label: 'Taxa de Reciclagem', value: '78%', trend: '+5% desde o Q1' },
-              { icon: Leaf, label: 'Ecoeficiência', value: '92/100', trend: 'Líder do Setor' },
-              { icon: Users, label: 'Engajamento', value: '84%', trend: 'Score de Clima' },
-              { icon: Scale, label: 'Compliance', value: '100%', trend: 'Zero Incidentes' },
+              { 
+                icon: Recycle, 
+                label: 'Gestão de Resíduos', 
+                value: reportsData.wasteDiverted, 
+                trend: formData['environmental_5.1'] === '5' ? 'Plano Ativo' : 'Em Planejamento' 
+              },
+              { 
+                icon: Leaf, 
+                label: 'Maturidade Ambiental', 
+                value: `${company?.esgScores.environmental || 0}/100`, 
+                trend: 'Score E' 
+              },
+              { 
+                icon: Users, 
+                label: 'Impacto Social', 
+                value: `${company?.esgScores.social || 0}/100`, 
+                trend: 'Score S' 
+              },
+              { 
+                icon: Scale, 
+                label: 'Governança', 
+                value: `${company?.esgScores.governance || 0}/100`, 
+                trend: 'Score G' 
+              },
             ].map((stat, i) => (
               <Card key={i} className="p-2 border-slate-100 dark:border-slate-800 flex flex-col justify-between hover:border-primary/30 transition-all group">
                 <div>
@@ -278,11 +410,11 @@ export const ReportsPage: React.FC = () => {
 
         {/* Footer Info */}
         <div className="border-t border-slate-100 dark:border-slate-800 pt-8 flex flex-col md:flex-row justify-between items-center text-slate-400 text-[10px] font-black uppercase tracking-[0.2em] gap-4 mb-8">
-          <p>© Manifesto Ambiental, 2026. Reporting verified by Bureau Veritas.</p>
+          <p>© Stitch ESG Dashboard, 2026. Dados baseados no seu diagnóstico corporativo.</p>
           <div className="flex items-center gap-8">
-            <a className="hover:text-primary transition-colors" href="#">Privacy Policy</a>
-            <a className="hover:text-primary transition-colors" href="#">Data Transparency</a>
-            <a className="hover:text-primary transition-colors" href="#">Help Center</a>
+            <a className="hover:text-primary transition-colors" href="#">Política de Dados</a>
+            <a className="hover:text-primary transition-colors" href="#">Transparência</a>
+            <a className="hover:text-primary transition-colors" href="#">Suporte</a>
           </div>
         </div>
       </div>

@@ -1803,7 +1803,7 @@ export const diagnosticQuestions: Question[] = [
     "category": "social",
     "subcategory": "11. SAÚDE E SEGURANÇA",
     "text": "Quais os benefícios que a empresa oferece para complementar os benefícios governamentais?",
-    "inputType": "radio",
+    "inputType": "checkbox",
     "options": [
       {
         "label": "Cobertura por invalidez ou seguro contra acidentes.",

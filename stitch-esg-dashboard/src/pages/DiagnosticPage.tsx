@@ -244,6 +244,21 @@ export const DiagnosticPage: React.FC = () => {
     debouncedSave(newAnswers);
   };
 
+  const handleCheckboxToggle = useCallback((value: string | number) => {
+    const currentAnswers = (answers[currentVisibleQuestion.id] as (string | number)[]) || [];
+    let newSelection: (string | number)[];
+
+    if (currentAnswers.includes(value)) {
+      newSelection = currentAnswers.filter(item => item !== value);
+    } else {
+      newSelection = [...currentAnswers, value];
+    }
+
+    const newAnswers = { ...answers, [currentVisibleQuestion.id]: newSelection };
+    setAnswers(newAnswers);
+    debouncedSave(newAnswers);
+  }, [answers, currentVisibleQuestion, debouncedSave]);
+
   const finishDiagnostic = useCallback(async () => {
     console.log("DiagnosticPage: Attempting to finish diagnostic...", {
       hasUser: !!user,
@@ -324,6 +339,28 @@ export const DiagnosticPage: React.FC = () => {
     }
     }, [user, diagnosticId, companyId, answers, questions, saveProgress, refreshAuth, navigate]);
 
+
+  const isNextDisabled = useMemo(() => {
+    if (!currentVisibleQuestion || !diagnosticId || isFinishing) return true;
+    
+    // For numeric questions with multiple fields (options)
+    if (currentVisibleQuestion.inputType === 'number' && currentVisibleQuestion.options && currentVisibleQuestion.options.length > 0) {
+      // Check if at least one field is filled (or we could require all, but usually at least one is better for UX)
+      return !currentVisibleQuestion.options.some((_, idx) => {
+        const val = answers[`${currentVisibleQuestion.id}_${idx}`];
+        return val !== undefined && val !== '';
+      });
+    }
+
+    // For checkboxes (must have at least one selected)
+    if (currentVisibleQuestion.inputType === 'checkbox') {
+      const selected = answers[currentVisibleQuestion.id] as (string | number)[];
+      return !selected || selected.length === 0;
+    }
+
+    // Default for radio, text, select, date
+    return answers[currentVisibleQuestion.id] === undefined || answers[currentVisibleQuestion.id] === '';
+  }, [currentVisibleQuestion, answers, diagnosticId, isFinishing]);
 
   const handleNext = useCallback(async () => {
     if (currentStep < visibleQuestions.length - 1) {
@@ -525,6 +562,43 @@ export const DiagnosticPage: React.FC = () => {
                   </label>
                 ))}
 
+                {currentVisibleQuestion.inputType === 'checkbox' && currentVisibleQuestion.options?.map((option: QuestionOption, idx: number) => {
+                  const currentValues = (answers[currentVisibleQuestion.id] as (string | number)[]) || [];
+                  const isChecked = currentValues.includes(option.value);
+                  return (
+                    <label
+                      key={idx}
+                      className={`flex items-center p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 group
+                        ${isChecked
+                          ? 'border-primary bg-primary/5 shadow-lg scale-[1.01]'
+                          : 'border-slate-100 dark:border-slate-800 hover:border-primary/30 hover:bg-slate-50 dark:hover:bg-slate-800'
+                        }
+                      `}
+                    >
+                      <div className={`w-6 h-6 rounded-md border-2 flex items-center justify-center transition-all
+                        ${isChecked
+                          ? 'border-primary bg-primary'
+                          : 'border-slate-300 dark:border-slate-600 group-hover:border-primary'}
+                      `}>
+                        {isChecked && <Check size={14} className="text-white" strokeWidth={4} />}
+                      </div>
+                      <input
+                        type="checkbox"
+                        className="hidden"
+                        checked={isChecked}
+                        onChange={() => handleCheckboxToggle(option.value)}
+                      />
+                      <div className="ml-4 flex flex-col">
+                        <span className={`font-black text-[10px] uppercase tracking-widest transition-colors
+                            ${isChecked ? 'text-slate-900 dark:text-white' : 'text-slate-500 dark:text-slate-400'}
+                          `}>
+                          {option.label}
+                        </span>
+                      </div>
+                    </label>
+                  );
+                })}
+
                 {currentVisibleQuestion.inputType === 'text' && (
                   <input
                     type="text"
@@ -538,15 +612,40 @@ export const DiagnosticPage: React.FC = () => {
                 )}
 
                 {currentVisibleQuestion.inputType === 'number' && (
-                  <input
-                    type="number"
-                    value={(answers[currentVisibleQuestion.id] as number | string) || ''}
-                    onChange={(e) => handleTextChange(e.target.value)}
-                    onKeyDown={handleKeyDown}
-                    className="w-full p-4 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl focus:border-primary focus:ring-0 text-slate-900 dark:text-white font-black uppercase text-[10px] tracking-widest placeholder:text-slate-300 dark:placeholder:text-slate-700 font-mono"
-                    placeholder="0"
-                    autoFocus
-                  />
+                  <div className="space-y-4">
+                    {currentVisibleQuestion.options && currentVisibleQuestion.options.length > 0 ? (
+                      currentVisibleQuestion.options.map((option, idx) => (
+                        <div key={idx} className="space-y-2">
+                          <label className="text-[10px] font-black text-slate-400 uppercase tracking-widest ml-2">
+                            {option.label}
+                          </label>
+                          <input
+                            type="number"
+                            value={(answers[`${currentVisibleQuestion.id}_${idx}`] as number | string) || ''}
+                            onChange={(e) => {
+                              const newAnswers = { ...answers, [`${currentVisibleQuestion.id}_${idx}`]: e.target.value };
+                              setAnswers(newAnswers);
+                              debouncedSave(newAnswers);
+                            }}
+                            onKeyDown={handleKeyDown}
+                            className="w-full p-4 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl focus:border-primary focus:ring-0 text-slate-900 dark:text-white font-black uppercase text-[10px] tracking-widest placeholder:text-slate-300 dark:placeholder:text-slate-700 font-mono"
+                            placeholder="0"
+                            autoFocus={idx === 0}
+                          />
+                        </div>
+                      ))
+                    ) : (
+                      <input
+                        type="number"
+                        value={(answers[currentVisibleQuestion.id] as number | string) || ''}
+                        onChange={(e) => handleTextChange(e.target.value)}
+                        onKeyDown={handleKeyDown}
+                        className="w-full p-4 bg-white dark:bg-slate-900 border-2 border-slate-100 dark:border-slate-800 rounded-2xl focus:border-primary focus:ring-0 text-slate-900 dark:text-white font-black uppercase text-[10px] tracking-widest placeholder:text-slate-300 dark:placeholder:text-slate-700 font-mono"
+                        placeholder="0"
+                        autoFocus
+                      />
+                    )}
+                  </div>
                 )}
 
                 {currentVisibleQuestion.inputType === 'date' && (
@@ -588,7 +687,7 @@ export const DiagnosticPage: React.FC = () => {
                 </Button>
                 <Button
                   onClick={handleNext}
-                  disabled={answers[currentVisibleQuestion.id] === undefined || answers[currentVisibleQuestion.id] === '' || isFinishing || !diagnosticId}
+                  disabled={isNextDisabled}
                   isLoading={isFinishing && !showSuccess} className={`px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl transition-all duration-300
                     ${showSuccess
                       ? 'bg-emerald-500 text-white shadow-emerald-500/40'

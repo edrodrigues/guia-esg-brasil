@@ -19,21 +19,29 @@ export const calculateESGScore = (
     const question = questions?.find(q => q.id === key);
 
     if (question && question.options) {
-      const selectedOption = question.options.find(opt => opt.value === value);
-      if (selectedOption && selectedOption.points !== undefined) {
-        const points = selectedOption.points;
-        const weight = selectedOption.weight || 1;
+      const processOption = (val: number | string) => {
+        const selectedOption = question.options?.find(opt => opt.value === val);
+        if (selectedOption && selectedOption.points !== undefined) {
+          const points = selectedOption.points;
+          const weight = selectedOption.weight || 1;
 
-        if (question.category === 'environmental') {
-          environmentalScore += points * weight;
-          totalWeightE += weight;
-        } else if (question.category === 'social') {
-          socialScore += points * weight;
-          totalWeightS += weight;
-        } else if (question.category === 'governance') {
-          governanceScore += points * weight;
-          totalWeightG += weight;
+          if (question.category === 'environmental') {
+            environmentalScore += points * weight;
+            totalWeightE += weight;
+          } else if (question.category === 'social') {
+            socialScore += points * weight;
+            totalWeightS += weight;
+          } else if (question.category === 'governance') {
+            governanceScore += points * weight;
+            totalWeightG += weight;
+          }
         }
+      };
+
+      if (Array.isArray(value)) {
+        value.forEach(val => processOption(val));
+      } else {
+        processOption(value);
       }
     } else if (typeof value === 'number') {
       // Fallback for cases where questions are not provided
