@@ -15,7 +15,7 @@ export const DiagnosticPage: React.FC = () => {
   const navigate = useNavigate();
   
   const [currentStep, setCurrentStep] = useState(0);
-  const [answers, setAnswers] = useState<Record<string, number>>({});
+  const [answers, setAnswers] = useState<Record<string, number | string>>({});
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
   const [diagnosticId, setDiagnosticId] = useState<string | null>(null);
@@ -24,7 +24,7 @@ export const DiagnosticPage: React.FC = () => {
   const currentQuestion = diagnosticQuestions[currentStep];
   const progress = Math.round(((Object.keys(answers).length) / totalQuestions) * 100);
 
-  const currentCategory = currentQuestion?.category || 'environmental';
+  const currentCategory = currentQuestion?.category || 'form';
 
   useEffect(() => {
     const loadDiagnostic = async () => {
@@ -66,7 +66,14 @@ export const DiagnosticPage: React.FC = () => {
     loadDiagnostic();
   }, [user, totalQuestions]);
 
-  const handleOptionSelect = (value: number) => {
+  const handleOptionSelect = (value: number | string) => {
+    setAnswers(prev => ({
+      ...prev,
+      [currentQuestion.id]: value
+    }));
+  };
+
+  const handleTextChange = (value: string) => {
     setAnswers(prev => ({
       ...prev,
       [currentQuestion.id]: value
@@ -122,47 +129,30 @@ export const DiagnosticPage: React.FC = () => {
     setLoading(true);
 
     try {
-      let envScore = 0, socScore = 0, govScore = 0;
-      let envCount = 0, socCount = 0, govCount = 0;
-
-      diagnosticQuestions.forEach(q => {
-        const val = answers[q.id] || 0;
-        if (q.category === 'environmental') { envScore += val; envCount++; }
-        if (q.category === 'social') { socScore += val; socCount++; }
-        if (q.category === 'governance') { govScore += val; govCount++; }
-      });
-
-      const finalScores = {
-        environmental: envCount ? Math.round(envScore / envCount) : 0,
-        social: socCount ? Math.round(socScore / socCount) : 0,
-        governance: govCount ? Math.round(govScore / govCount) : 0,
-      };
-
       await updateDoc(doc(db, 'diagnostics', diagnosticId), {
         completed: true,
-        finalScores,
+        formData: answers,
         completedAt: Timestamp.now()
       });
 
       const userDoc = await getDoc(doc(db, 'users', user.uid));
       const companyId = userDoc.data()?.companyId;
       const companyRef = doc(db, 'companies', companyId);
-      const companySnap = await getDoc(companyRef);
-      
-      const currentXP = companySnap.data()?.currentXP || 0;
-      const newXP = currentXP + 500;
-      const newLevel = Math.floor(newXP / 1000) + 1;
 
-      await updateDoc(companyRef, {
-        esgScores: finalScores,
-        currentXP: newXP,
-        level: newLevel,
+      const companyData: Record<string, unknown> = {
+        formData: answers,
         lastDiagnosticDate: Timestamp.now()
-      });
+      };
+
+      if (answers['form_1.1']) {
+        companyData.name = answers['form_1.1'];
+      }
+
+      await updateDoc(companyRef, companyData);
 
       if (refreshAuth) await refreshAuth();
 
-      navigate('/dashboard');
+      navigate('/environmental');
     } catch (err) {
       console.error("Error finishing diagnostic:", err);
     } finally {
@@ -170,7 +160,7 @@ export const DiagnosticPage: React.FC = () => {
     }
   };
 
-  const navigateToCategory = (cat: 'environmental' | 'social' | 'governance') => {
+  const navigateToCategory = (cat: 'form' | 'environmental' | 'social' | 'governance') => {
     const firstOfCat = diagnosticQuestions.findIndex(q => q.category === cat);
     if (firstOfCat !== -1) {
       setCurrentStep(firstOfCat);
@@ -178,21 +168,11 @@ export const DiagnosticPage: React.FC = () => {
   };
 
   const previewScores = useMemo(() => {
-    let env = 0, soc = 0, gov = 0;
-    let ec = 0, sc = 0, gc = 0;
-    
-    Object.entries(answers).forEach(([qId, val]) => {
-      const q = diagnosticQuestions.find(dq => dq.id === qId);
-      if (q?.category === 'environmental') { env += val; ec++; }
-      if (q?.category === 'social') { soc += val; sc++; }
-      if (q?.category === 'governance') { gov += val; gc++; }
-    });
-
     return {
-      env: ec ? Math.round(env / ec) : 0,
-      soc: sc ? Math.round(soc / sc) : 0,
-      gov: gc ? Math.round(gov / gc) : 0,
-      avg: (ec + sc + gc) ? Math.round((env + soc + gov) / (ec + sc + gc)) : 0
+      env: 0,
+      soc: 0,
+      gov: 0,
+      avg: 0
     };
   }, [answers]);
 
@@ -221,10 +201,10 @@ export const DiagnosticPage: React.FC = () => {
       <div className="space-y-8 animate-in fade-in slide-in-from-bottom-4 duration-700">
         <div className="mb-8">
           <h2 className="text-4xl font-black text-slate-900 dark:text-white mb-2 tracking-tighter uppercase">
-            Jornada de Maturidade ESG
+            Cadastro da Empresa
           </h2>
           <p className="text-slate-600 dark:text-slate-400 text-lg font-medium">
-            Explore o desempenho de sustentabilidade da sua empresa de um jeito divertido e analítico.
+            Preencha os dados da sua empresa para continuar com o diagnóstico ESG.
           </p>
         </div>
 
@@ -235,7 +215,7 @@ export const DiagnosticPage: React.FC = () => {
                 <p className="text-[10px] font-black text-slate-400 uppercase tracking-[0.2em] mb-2">PROGRESSO DA MISSÃO</p>
                 <h3 className="text-3xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">{progress}% Concluído</h3>
               </div>
-              <span className="text-xs font-black text-primary uppercase tracking-widest">{Object.keys(answers).length} / {totalQuestions} Desafios</span>
+              <span className="text-xs font-black text-primary uppercase tracking-widest">{Object.keys(answers).length} / {totalQuestions} Dados</span>
             </div>
             <div className="w-full bg-slate-100 dark:bg-slate-800 h-4 rounded-full overflow-hidden mb-4">
               <div 
@@ -271,28 +251,12 @@ export const DiagnosticPage: React.FC = () => {
 
         <div className="flex flex-wrap border-b-2 border-slate-100 dark:border-slate-800 gap-2 md:gap-8 mb-8">
           <button 
-            onClick={() => navigateToCategory('environmental')}
+            onClick={() => navigateToCategory('form')}
             className={`pb-4 px-2 border-b-4 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 transition-all
-              ${currentCategory === 'environmental' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}
+              ${currentCategory === 'form' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}
             `}
           >
-            <span className="material-symbols-outlined text-lg">forest</span> Ambiental (E)
-          </button>
-          <button 
-            onClick={() => navigateToCategory('social')}
-            className={`pb-4 px-2 border-b-4 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 transition-all
-              ${currentCategory === 'social' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}
-            `}
-          >
-            <span className="material-symbols-outlined text-lg">diversity_3</span> Social (S)
-          </button>
-          <button 
-            onClick={() => navigateToCategory('governance')}
-            className={`pb-4 px-2 border-b-4 font-black uppercase tracking-widest text-[10px] flex items-center gap-2 transition-all
-              ${currentCategory === 'governance' ? 'border-primary text-primary' : 'border-transparent text-slate-400 hover:text-slate-600'}
-            `}
-          >
-            <span className="material-symbols-outlined text-lg">account_balance</span> Governança (G)
+            <span className="material-symbols-outlined text-lg">description</span> Dados da Empresa
           </button>
         </div>
 
@@ -301,7 +265,7 @@ export const DiagnosticPage: React.FC = () => {
             <Card className="border-b-8">
               <div className="mb-8">
                 <span className="inline-block px-3 py-1 rounded-full bg-primary/10 text-primary text-[10px] font-black mb-4 uppercase tracking-widest border border-primary/20">
-                  {currentCategory === 'environmental' ? 'Nível 1: Eco-Guerreiro' : currentCategory === 'social' ? 'Nível 1: Guardião Social' : 'Nível 1: Mestre da Ética'}
+                  Dados da Empresa - Passo {currentStep + 1} de {totalQuestions}
                 </span>
                 <h3 className="text-2xl font-black text-slate-900 dark:text-white mb-2 leading-tight uppercase tracking-tight">
                   {currentQuestion.text}
@@ -314,7 +278,7 @@ export const DiagnosticPage: React.FC = () => {
               </div>
 
               <div className="space-y-3">
-                {currentQuestion.options.map((option, idx) => (
+                {(!currentQuestion.inputType || currentQuestion.inputType === 'radio') && currentQuestion.options?.map((option, idx) => (
                   <label 
                     key={idx}
                     className={`flex items-center p-5 rounded-2xl border-2 cursor-pointer transition-all duration-200 group
@@ -345,6 +309,31 @@ export const DiagnosticPage: React.FC = () => {
                     </span>
                   </label>
                 ))}
+
+                {currentQuestion.inputType === 'text' && (
+                  <input
+                    type="text"
+                    value={(answers[currentQuestion.id] as string) || ''}
+                    onChange={(e) => handleTextChange(e.target.value)}
+                    className="w-full p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                    placeholder="Digite sua resposta..."
+                  />
+                )}
+
+                {currentQuestion.inputType === 'select' && currentQuestion.options && (
+                  <select
+                    value={(answers[currentQuestion.id] as string) || ''}
+                    onChange={(e) => handleOptionSelect(e.target.value)}
+                    className="w-full p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary text-sm"
+                  >
+                    <option value="">Selecione uma opção</option>
+                    {currentQuestion.options.map((option, idx) => (
+                      <option key={idx} value={option.value as string}>
+                        {option.label}
+                      </option>
+                    ))}
+                  </select>
+                )}
               </div>
 
               <div className="mt-10 pt-8 border-t-2 border-slate-100 dark:border-slate-800 flex justify-between">
@@ -362,7 +351,7 @@ export const DiagnosticPage: React.FC = () => {
                   isLoading={saving}
                   className="px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-emerald-500/20"
                 >
-                  {currentStep === totalQuestions - 1 ? 'Finalizar Missão' : 'Próximo Desafio'}
+                  {currentStep === totalQuestions - 1 ? 'Finalizar e Continuar' : 'Próximo'}
                   {currentStep !== totalQuestions - 1 && <ChevronRight size={18} className="ml-2" />}
                 </Button>
               </div>
