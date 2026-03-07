@@ -1,0 +1,277 @@
+[
+  {
+    "id": "form_1.1",
+    "category": "form",
+    "subcategory": "IDENTIFICAÇÃO",
+    "text": "Nome da Empresa",
+    "inputType": "text",
+    "options": []
+  },
+  {
+    "id": "form_1.2",
+    "category": "form",
+    "subcategory": "IDENTIFICAÇÃO",
+    "text": "CNPJ",
+    "inputType": "number",
+    "options": []
+  },
+  {
+    "id": "form_1.3",
+    "category": "form",
+    "subcategory": "ESCOPO",
+    "text": "Escopo da avaliação",
+    "inputType": "date",
+    "options": []
+  },
+  {
+    "id": "form_1.4",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "Setor",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Atacado/varejo",
+        "value": "Atacado/varejo",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Fabricação",
+        "value": "Fabricação",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Serviço",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "form_1.5",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "Tipo de Produto/Serviço",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Móveis em madeira",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Móveis Planejados",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Estofados",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Móveis de metal",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Outros.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "form_1.6",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "ATIVIDADE",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Design e fabricação",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Venda e distribuição",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "E-commerce",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Outros.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "form_1.6 a",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "Sobre a segurança dos dados em seu ambiente digital.",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não temos qualquer solução de segurança de dados.",
+        "value": "Não temos qualquer solução de segurança de dados.",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Description of policies and practices relating to targeted advertising and user privacy",
+        "value": "Description of policies and practices relating to targeted advertising and user privacy",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "LGPD",
+        "value": "LGPD",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "form_1.6 b",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "Embalagem.",
+    "inputType": "radio",
+    "options": []
+  },
+  {
+    "id": "form_1.6 c",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "Distribuição.",
+    "inputType": "radio",
+    "options": []
+  },
+  {
+    "id": "form_1.7",
+    "category": "form",
+    "subcategory": "CATEGORIA",
+    "text": "NÚMERO DE FUNCIONÁRIOS",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "0 - 10 funcionários",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0,
+        "message": "Conhecer o porte da empresa é importante pois auxilia a mapear suas responsabilidades e compromissos com a comunidade."
+      },
+      {
+        "label": "10 - 50 funcionários",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50 - 100 funcionários",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "100 - 200 funcionários",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "acima de 200 funcionários",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "form_1.8",
+    "category": "form",
+    "subcategory": "SEDE E FILIAIS",
+    "text": "CIDADE",
+    "inputType": "select",
+    "options": [
+      {
+        "label": "[caixa de rolagem]",
+        "value": "[caixa de rolagem]",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "form_1.9",
+    "category": "form",
+    "subcategory": "SEDE E FILIAIS",
+    "text": "ESTADO",
+    "inputType": "select",
+    "options": [
+      {
+        "label": "[caixa de rolagem]",
+        "value": "[caixa de rolagem]",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "form_1.10",
+    "category": "form",
+    "subcategory": "DADOS DEMOGRÁFICOS DE PROPRIEDADE",
+    "text": "A empresa pertence a:",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Propriedade familiar",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Pertence a mulheres",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Pertence a pessoa LGBTQIAPN+",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Pertence a pessoa negra ou indígena",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Pessoa com deficiência",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  }
+]

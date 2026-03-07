@@ -127,14 +127,36 @@ export const DiagnosticPage: React.FC = () => {
       console.log("DiagnosticPage: Loading diagnostic for user", user.uid);
 
       try {
-        const userDoc = await getDoc(doc(db, 'users', user.uid));
+        let userDoc = await getDoc(doc(db, 'users', user.uid));
+        
         if (!userDoc.exists()) {
-          console.error("DiagnosticPage: User document not found in Firestore for UID:", user.uid);
-          alert("Erro: Perfil de usuário não encontrado. Por favor, tente sair e entrar novamente.");
-          return;
+          console.warn("DiagnosticPage: User document not found, creating default profile...");
+          const newCompanyId = `comp_${Date.now()}`;
+          const newCompanyRef = doc(db, 'companies', newCompanyId);
+          
+          await setDoc(newCompanyRef, {
+            name: 'Minha Empresa ESG',
+            industry: 'Not specified',
+            region: 'Not specified',
+            currentXP: 0,
+            level: 1,
+            esgScores: { environmental: 0, social: 0, governance: 0 },
+            createdAt: Timestamp.now()
+          });
+
+          await setDoc(doc(db, 'users', user.uid), {
+            uid: user.uid,
+            name: user.displayName || 'Mestre ESG',
+            email: user.email,
+            companyId: newCompanyId,
+            role: 'admin',
+            avatarUrl: user.photoURL || `https://api.dicebear.com/7.x/avataaars/svg?seed=${user.uid}`
+          });
+          
+          userDoc = await getDoc(doc(db, 'users', user.uid));
         }
 
-        const cid = userDoc.data().companyId;
+        const cid = userDoc.data()?.companyId;
         setCompanyId(cid);
         console.log("DiagnosticPage: Found companyId:", cid);
 
@@ -497,14 +519,14 @@ export const DiagnosticPage: React.FC = () => {
                   </label>
                 ))}
 
-                {currentVisibleQuestion.inputType === 'text' && (
+                {(currentVisibleQuestion.inputType === 'text' || currentVisibleQuestion.inputType === 'number' || currentVisibleQuestion.inputType === 'date') && (
                   <input
-                    type="text"
+                    type={currentVisibleQuestion.inputType}
                     value={(answers[currentVisibleQuestion.id] as string) || ''}
                     onChange={(e) => handleTextChange(e.target.value)}
                     onKeyDown={handleKeyDown}
                     className="w-full p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary text-sm"
-                    placeholder="Digite sua resposta..."
+                    placeholder={currentVisibleQuestion.inputType === 'date' ? "" : "Digite sua resposta..."}
                     autoFocus
                   />
                 )}

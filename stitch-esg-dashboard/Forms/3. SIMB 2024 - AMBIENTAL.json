@@ -1,0 +1,934 @@
+[
+  {
+    "id": "environmental_2.1",
+    "category": "environmental",
+    "subcategory": "2. SGA",
+    "text": "A sua empresa monitora e reporta indicadores ambientais?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5,
+        "recommendation": "Organize um Sistema de Gestão Ambiental segundo a Norma ISO 14.001/2005 em sua empresa. \n\nUm sistema de gestão ambiental (SGA) é um conjunto de políticas, procedimentos e práticas adotadas por uma organização para gerenciar e minimizar seu impacto ambiental. Ele visa promover a sustentabilidade ao integrar considerações ambientais nas operações diárias da empresa. \n\nUm SGA geralmente inclui atividades como identificação e avaliação de impactos ambientais, estabelecimento de metas e objetivos ambientais, implementação de medidas de controle e monitoramento do desempenho ambiental. O objetivo final é reduzir a pegada ecológica da organização e promover práticas empresariais responsáveis em relação ao meio ambiente."
+      },
+      {
+        "label": "Monitoramos alguns indicadores ambientais.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5,
+        "recommendation": "Organize um Sistema de Gestão Ambiental segundo a Norma ISO 14.001/2005 em sua empresa. \n\nUm sistema de gestão ambiental (SGA) é um conjunto de políticas, procedimentos e práticas adotadas por uma organização para gerenciar e minimizar seu impacto ambiental. Ele visa promover a sustentabilidade ao integrar considerações ambientais nas operações diárias da empresa. \n\nUm SGA geralmente inclui atividades como identificação e avaliação de impactos ambientais, estabelecimento de metas e objetivos ambientais, implementação de medidas de controle e monitoramento do desempenho ambiental. O objetivo final é reduzir a pegada ecológica da organização e promover práticas empresariais responsáveis em relação ao meio ambiente."
+      },
+      {
+        "label": "A empresa monitora seus indicadores ambientais e os reporta internamente.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0,
+        "recommendation": "Organize um Sistema de Gestão Ambiental segundo a Norma ISO 14.001/2005 em sua empresa. \n\nUm sistema de gestão ambiental (SGA) é um conjunto de políticas, procedimentos e práticas adotadas por uma organização para gerenciar e minimizar seu impacto ambiental. Ele visa promover a sustentabilidade ao integrar considerações ambientais nas operações diárias da empresa. \n\nUm SGA geralmente inclui atividades como identificação e avaliação de impactos ambientais, estabelecimento de metas e objetivos ambientais, implementação de medidas de controle e monitoramento do desempenho ambiental. O objetivo final é reduzir a pegada ecológica da organização e promover práticas empresariais responsáveis em relação ao meio ambiente."
+      },
+      {
+        "label": "A empresa monitora e possui metas estabelecidas para melhorar seu desempenho.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0,
+        "recommendation": "Organize um Sistema de Gestão Ambiental segundo a Norma ISO 14.001/2005 em sua empresa. \n\nUm sistema de gestão ambiental (SGA) é um conjunto de políticas, procedimentos e práticas adotadas por uma organização para gerenciar e minimizar seu impacto ambiental. Ele visa promover a sustentabilidade ao integrar considerações ambientais nas operações diárias da empresa. \n\nUm SGA geralmente inclui atividades como identificação e avaliação de impactos ambientais, estabelecimento de metas e objetivos ambientais, implementação de medidas de controle e monitoramento do desempenho ambiental. O objetivo final é reduzir a pegada ecológica da organização e promover práticas empresariais responsáveis em relação ao meio ambiente."
+      },
+      {
+        "label": "A empresa monitora seus indicadores ambientais, possui um Sistema de Gestão Ambiental e já alcançou metas relevantes nesse setor.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_2.2",
+    "category": "environmental",
+    "subcategory": "2. SGA",
+    "text": "Existe algum documento que aborde o posicionamento socioambiental ou a política ambiental da empresa?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0,
+        "message": "A missão socioambiental da empresa é um documento importante que deve estar divulgado em todos os materiais públicos da empresa."
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0,
+        "message": "A missão socioambiental da empresa é um documento importante que deve estar divulgado em todos os materiais públicos da empresa."
+      }
+    ]
+  },
+  {
+    "id": "environmental_2.3",
+    "category": "environmental",
+    "subcategory": "2. SGA",
+    "text": "Descreva aqui o posicionamento socioambiental da empresa.",
+    "inputType": "text",
+    "options": [
+      {
+        "label": "[TEXTO CURTO]",
+        "value": "[TEXTO CURTO]",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "environmental_3.1",
+    "category": "environmental",
+    "subcategory": "3. ENERGIA",
+    "text": "Como a sua empresa monitora o consumo de energia?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5,
+        "message": "A indústria moveleira utiliza energia em várias etapas do processo de produção, desde a extração de matéria-prima até a fabricação, transporte e montagem dos móveis. Por isso, a energia é um dos impactos mais significativos."
+      },
+      {
+        "label": "Monitoramos, mas não estabelecemos metas de redução.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "A empresa monitora e tem reduzido o seu consumo.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Alcançamos as metas de redução no consumo no último ano fiscal.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "A empresa possui tecnologias verdes implementadas para diversificar suas fontes de fornecimento de energia.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_3.2",
+    "category": "environmental",
+    "subcategory": "3. ENERGIA",
+    "text": "Consumo de energia no último ano fiscal?",
+    "inputType": "number",
+    "options": [
+      {
+        "label": "Kw",
+        "value": "Kw",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "environmental_3.3",
+    "category": "environmental",
+    "subcategory": "3. ENERGIA",
+    "text": "Fontes de fornecimento de energia",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Fornecimento regular e geradores movidos à diesel eventualmente.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5,
+        "message": "A energia é o impacto um dos impactos mais significativos para a indústria moveleira, por isso, adotar fontes renováveis e responsáveis é um dos pontos mais importantes desta avaliação."
+      },
+      {
+        "label": "Fornecimento regular",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Fornecimento regular e outras fontes ecoeficientes como energia solar.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Energia adquirida no mercado livre",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "A empresa passou por uma transição energética, possui metas de redução ou transição para fontes ecoeficientes e geração própria de energia por biodigestão ou outras tecnologias verdes.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_3.4",
+    "category": "environmental",
+    "subcategory": "3. ENERGIA",
+    "text": "Qual o percentual do fornecimento de energia é proveniente de fontes sustentáveis e ecoeficientes?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Menos de 10%",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "20%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "+ de 50%",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.1",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "Como a sua empresa monitora o consumo de água?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos ainda.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos, mas não estabelecemos metas de redução.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa monitora e tem reduzido o seu consumo.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Alcançamos as metas de redução no último ano fiscal.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa passou por uma transição e mais de 50% do consumo atual de água é proveniente de fontes ecoeficientes.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.2",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "Consumo de água no último ano fiscal?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Lts",
+        "value": "Lts",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.3",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "Fontes de fornecimento de água",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Captação em corpos hídricos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Poço artesiano ou caminhão-pipa.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Fornecimento regular.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Reutilização de água de chuva.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Autossuficiência em água através de fontes responsáveis de aproveitamento e reaproveitamento de águas tratadas pela empresa.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.4",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "Qual o percentual do fornecimento de energia é proveniente de fontes sustentáveis e ecoeficientes?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Menos de 10%",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "20%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.5",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "De que forma a empresa descarta seus efluentes?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "In natura em corpos hídricos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Tratamento feito pela empresa e despejado em corpos hídricos.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "In natura para o esgoto regular.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa possui Estação de Tratamento de Efluentes que após tratados são enviados para o esgoto regular",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa possui em suas instalações tecnologias de tratamento e reaproveitamento de água de esgoto.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.6",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "A empresa emite efluentes tóxicos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": "Sim",
+        "points": 0.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_4.7",
+    "category": "environmental",
+    "subcategory": "4. ÁGUA E EFLUENTES",
+    "text": "De que forma a empresa monitora o tratamento e descarte dos efluentes tóxicos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não adotamos nenhuma medida.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa monitora sua toxicidade e volume.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa monitora sua toxicidade, volume e possui uma Estação de Tratamento de Efluentes.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa monitora sua toxicidade, volume, possui uma Estação de Tratamento de Efluentes e estabeleceu metas de redução do volume do material residual tóxico.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa conseguiu reduzir em mais de 50% ou zerar a emissão de efluentes tóxicos.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_5.1",
+    "category": "environmental",
+    "subcategory": "5. GESTAO DE RESIDUOS",
+    "text": "A empresa possui um plano de gerenciamento de resíduos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_5.2",
+    "category": "environmental",
+    "subcategory": "5. GESTAO DE RESIDUOS",
+    "text": "Qual o volume de resíduos gerados no último ano fiscal?",
+    "inputType": "number",
+    "options": [
+      {
+        "label": "[NÚMERO TOTAL] Kg\n\n[NÚMERO RECICLÁVEIS] Kg",
+        "value": "[NÚMERO TOTAL] Kg\n\n[NÚMERO RECICLÁVEIS] Kg",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "environmental_5.3",
+    "category": "environmental",
+    "subcategory": "5. GESTAO DE RESIDUOS",
+    "text": "Qual o destino final dos resíduos gerados pela empresa?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Coleta regular.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Coleta regular e cooperativa de materiais recicláveis.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Reaproveitamento no processo produtivo, coleta regular e cooperativa de materiais recicláveis.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Temos uma empresa contratada para fazer a destinação final correta.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Conseguimos reduzir em mais de 50% o volume dos resíduos gerados ou somos uma empresa que possui o compromisso de produzir lixo zero.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_5.4",
+    "category": "environmental",
+    "subcategory": "5. GESTAO DE RESIDUOS",
+    "text": "Quais as medidas relacionadas à redução de resíduos são adotadas pela sua empresa?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Fazemos a coleta seletiva do lixo.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Fazemos a coleta seletiva do lixo e nos comprometemos com o treinamento de toda a equipe e a sensibilização acerca do tema resíduos e o desperdício de materiais.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Fazemos a coleta seletiva, destinamos de forma correta e adotamos medidas práticas para a redução da produção de lixo em nossos processos.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Temos parcerias com instituições que reaproveitam os materiais recicláveis descartados, como cooperativas de catadores.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Reaproveitamos nossos resíduos como matéria-prima para produzir novos produtos.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_5.5",
+    "category": "environmental",
+    "subcategory": "5. GESTAO DE RESIDUOS",
+    "text": "A empresa monitora o volume de resíduos perigosos gerados?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_5.6",
+    "category": "environmental",
+    "subcategory": "5. GESTAO DE RESIDUOS",
+    "text": "Existe alguma medida ou tecnologia aplicada às embalagens para evitar a proliferação de materiais plásticos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_6.1",
+    "category": "environmental",
+    "subcategory": "6. AR E CLIMA",
+    "text": "De que forma a sua empresa monitora as emissões de Gases de Efeito Estufa?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Atualmente não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos de forma parcial.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos através de um Inventário verificação de GEE.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos e estabelecemos metas de redução.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos e estabelecemos meta de carbono zero.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_6.2",
+    "category": "environmental",
+    "subcategory": "6. AR E CLIMA",
+    "text": "Qual a emissão em CO2 durante o último ano fiscal?",
+    "inputType": "number",
+    "options": [
+      {
+        "label": "Total do ESCOPO 1",
+        "value": "Total do ESCOPO 1",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Total do ESCOPO 2",
+        "value": "Total do ESCOPO 2",
+        "points": 0,
+        "weight": 1
+      },
+      {
+        "label": "Total do ESCOPO 3",
+        "value": "Total do ESCOPO 3",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  },
+  {
+    "id": "environmental_6.3",
+    "category": "environmental",
+    "subcategory": "6. AR E CLIMA",
+    "text": "De que forma a sua empresa monitora qualidade do ar nas suas instalações?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Atualmente não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Não monitoramos, mas possuímos ambientes abertos e ventilados.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos periodicamente e possuímos aparelhos de filtragem de ar.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos periodicamente, possuímos aparelhos de filtragem de ar e estabelecemos metas de melhoria.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos periodicamente, possuímos aparelhos de filtragem de ar e alcançamos nossas metas de melhoria.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_7.1",
+    "category": "environmental",
+    "subcategory": "7. MATÉRIA-PRIMA",
+    "text": "A empresa possui alguma certificação de rastreabilidade?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos a origem de nossas matérias-prima.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Nossa matéria-prima é verificada, mas não é certificada.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Utilizamos mais de 50% de matéria-prima certificada.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Utilizamos apenas matéria-prima certificada.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "A empresa é certificada pela FSC ou por outras certificação de manejo florestal responsável.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_7.2",
+    "category": "environmental",
+    "subcategory": "7. MATÉRIA-PRIMA",
+    "text": "Na empresa existem iniciativas para fortalecer o manejo sustentável dos fornecedores de madeira?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "A empresa não possui iniciativas de fortalecimento de manejo estabelecidas e implantadas.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5
+      },
+      {
+        "label": "A empresa planeja adotar iniciativas para fortalecer o manejo sustentável pelos fornecedores de madeira.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Existem iniciativas de fortalecimento do manejo florestal estabelecidas e implantadas.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "As  iniciativas de fortalecimento de manejo  florestal estão estabelecidas e em implantação.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "Temos um programa de manejo sustentável com os fornecedores e também buscamos regenerar florestas como forma de compensar nossos impactos negativos.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_8.1",
+    "category": "environmental",
+    "subcategory": "8. DESIGN CIRCULAR E CICLO DE VIDA",
+    "text": "A empresa possui a gestão do ciclo de vida do produto?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não possuímos a gestão do ciclo de vida.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Conhecemos o ciclo de vida do nosso produto, mas não nos responsabilizamos pela sua destinação final.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Conhecemos o ciclo de vida do nosso produto e fazemos as recomendações na embalagem sobre o descarte adequado.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Possuímos sistema de logística reversa.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "A empresa é certificada pela CRADLE TO CRADLE ou por outras certificação de controle de ciclo de vida de produto.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_8.2",
+    "category": "environmental",
+    "subcategory": "8. DESIGN CIRCULAR E CICLO DE VIDA",
+    "text": "A empresa possui em seus processos produtivos a adoção do design voltado à segurança de seus produtos durante todo o ciclo de vida?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_8.3",
+    "category": "environmental",
+    "subcategory": "8. DESIGN CIRCULAR E CICLO DE VIDA",
+    "text": "A empresa possui em seus processos produtivos a adoção do design voltado à circularidade e à redução de resíduos provenientes de seus produtos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_8.4",
+    "category": "environmental",
+    "subcategory": "8. DESIGN CIRCULAR E CICLO DE VIDA",
+    "text": "Qual o posicionamento da empresa relativo à produtos tóxicos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Utilizamos produtos tóxicos e ainda não conseguimos pensar em alternativas para reduzir a toxicidade do nosso processo produtivo.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Utilizamos produtos tóxicos e buscamos reduzir o seu uso.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Utilizamos apenas o necessário de produtos tóxicos e já conseguimos pensar em alternativas para reduzir a toxicidade do nosso processo produtivo.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Já possuímos alternativas implementadas e mais de 50% da nossa produção não utiliza produtos tóxicos.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "Não utilizamos produtos tóxicos em nosso processo produtivo.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "environmental_8.5",
+    "category": "environmental",
+    "subcategory": "8. DESIGN CIRCULAR E CICLO DE VIDA",
+    "text": "Sua empresa adotou alguma tecnologia para minimizar o impacto ambiental relacionado ao transporte em sua cadeia de abastecimento e distribuição?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      },
+      {
+        "label": "perguntas",
+        "value": "perguntas",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  }
+]

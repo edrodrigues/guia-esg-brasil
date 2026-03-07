@@ -1,0 +1,389 @@
+[
+  {
+    "id": "governance_14.1",
+    "category": "governance",
+    "subcategory": "14. CULTURA E VALORES",
+    "text": "A empresa tem definida sua declaração de missão, visão e valores?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "A empresa não tem definida sua declaração de missão, visão e valores.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa possui definição de missão, visão e valores, porém sem metas associadas.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A declaração de missão, visão e valores possui metas e objetivos relacionados.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa tem a sustentabilidade incluida em sua missão e estratégia.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa  tem a sustentabilidade incluída em sua missão e estratégia e faz o monitoramento dos indicadores ESG",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_15.1",
+    "category": "governance",
+    "subcategory": "15. GESTÃO DA SATISFAÇÃO DO CLIENTE",
+    "text": "A empresa realiza periodicamente pesquisas para saber a opinião de seus clientes, fornecedores e comunidade do entorno (stakeholders) para entender suas expectativas e necessidades?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "A empresa não realiza pesquisas nem possui canal de atendimento ao consumidor.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa não realiza pesquisas e possui canal de atendimento ao consumidor.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa  realiza pesquisas em diversos canais para conhecer a opinião de seus clientes, fornecedores e da comunidade.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa realiza pesquisas com todas as suas partes interessadas, possui canal de atendimento ao fornecedor e canal de denúncias.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa possui seus stakeholders em esferas decisórias da empresa, conselho de diretores por exemplo.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_15.2",
+    "category": "governance",
+    "subcategory": "15. GESTÃO DA SATISFAÇÃO DO CLIENTE",
+    "text": "A empresa monitora o grau de satisfação dos seus clientes?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_15.3",
+    "category": "governance",
+    "subcategory": "15. GESTÃO DA SATISFAÇÃO DO CLIENTE",
+    "text": "A empresa possui procedimentos para acompanhamento e tratamento das reclamações/ sugestões recebidas em diferentes plataformas, inclusive redes sociais?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_16.1",
+    "category": "governance",
+    "subcategory": "16. QUALIDADE E SEGURANÇA DO PRODUTO",
+    "text": "São oferecidas garantias extraordinárias além das estabelecidas em lei?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_17.1",
+    "category": "governance",
+    "subcategory": "17. ROTULAGEM E PRÁTICAS DE VENDA",
+    "text": "A empresa possui em suas embalagens alguma certificação ou atributo identificado em suas embalagens?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_18.1",
+    "category": "governance",
+    "subcategory": "18. GERENCIAMENTO DE RISCOS",
+    "text": "A empresa realizou o estudo e formou a sua matriz de materialidade para entender quais os principais riscos ESG para o negócio?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "A empresa não realizou ainda o estudo da sua matriz de materialidade.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Conhecemos nossos riscos, mas em nível gerencial, sem a devida divulgação e gestão.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Realizamos a matriz de materialidade de forma interna, consultando a alta direção.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Realizamos a matriz de materialidade de dupla materialidade, consultando a alta direção e as partes interessadas (stakeholders).",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A matriz de materialidade está publicada em nosso último relatorio de sustentabilidade.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_18.2",
+    "category": "governance",
+    "subcategory": "18. GERENCIAMENTO DE RISCOS",
+    "text": "A empresa adota procedimentos para a gestão dos seus riscos ESG?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_19.1",
+    "category": "governance",
+    "subcategory": "19. GESTÃO DE REQUISITOS LEGAIS",
+    "text": "A empresa possui todas as autorizações necessárias para a sua atuação?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_19.2",
+    "category": "governance",
+    "subcategory": "19. GESTÃO DE REQUISITOS LEGAIS",
+    "text": "A empresa atualiza periodicamente a sua análise de requisitos legais?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_20.1",
+    "category": "governance",
+    "subcategory": "20. ETICA E TRANSPARÊNCIA",
+    "text": "A empresa possui uma cultura de conduta clara sobre práticas de relacionamento ético com o poder público, fornecedores e clientes?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "A empresa não define as práticas de relacionamento.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Na empresa, os funcionários não conhecem bem a formalização das condutas.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "SIM, mas ainda não estão definidas em normas internas da empresa.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "SIM, as condutas estão definidas em normas e práticas éticas divulgadas na empresa.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "As normas estão definidas, formalizadas, divulgadas e os funcionários sáo treinados pelo menos anualmente.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_20.2",
+    "category": "governance",
+    "subcategory": "20. ETICA E TRANSPARÊNCIA",
+    "text": "O relatório financeiro da sua empresa atende:",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não possuímos relatório financeiro divulgado.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Possuímos relatório financeiro o qual divulgamos internamente.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Nosso relatório financeiro atende às normas de contabilidade locais.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Nosso relatório financeiro atende às normas de contabilidade internacionais.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Nosso relatório financeiro é auditado por entidade externa.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "governance_20.3",
+    "category": "governance",
+    "subcategory": "20. ETICA E TRANSPARÊNCIA",
+    "text": "Relatórios de Sustentabilidade",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não possuímos relatório de sustentabilidade divulgado.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Possuímos relatório de sustentabilidade o qual divulgamos internamente.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Divulgamos nossos indicadores de sustentabilidade em nosso site.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Nosso relatório de sustentabilidade é realizado segundo as normas GRI.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Nosso relatório de sustentabilidade pelas normas GRI já estão no segundo ano ou mais de reporte.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      },
+      {
+        "label": "PERGUNTAS",
+        "value": "PERGUNTAS",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  }
+]

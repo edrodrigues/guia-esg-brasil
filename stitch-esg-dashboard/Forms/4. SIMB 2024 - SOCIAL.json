@@ -1,0 +1,721 @@
+[
+  {
+    "id": "social_9.1",
+    "category": "social",
+    "subcategory": "9. DIREITOS HUMANOS",
+    "text": "A empresa possui política ou compliance para evitar a ocorrência de violações de direitos humanos em sua cadeia de valor?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não possuímos o compromisso formal com os direitos humanos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5,
+        "message": "Os impactos relativos à violação de direitos humanos são o maior risco reputacional para uma empresa, na prática estamos falando de medidas como prevenção ao trabalho análogo à escravidão e ao trabalho infantil. As medidas positivas podem ser a contratação de imigrantes ou o apoio à alguma organização que o faça."
+      },
+      {
+        "label": "Possuímos em nossos documentos (compliance ou outros) a expressa menção ou mecanismos para evitar violações de direitos humanos.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Possuímos o compromisso com os direitos humanos em toda a nossa cadeia de valor, adotamos práticas responsáveis e exigimos o mesmo dos fornecedores.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Fazemos verificações periódicas sobre os riscos associados aos direitos humanos em nossa cadeia de valor.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "Possuimos elevados níveis de colaboração com a agenda dos direitos humanos, adotamos políticas práticas internas e colaborações de nivel global.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "social_9.2",
+    "category": "social",
+    "subcategory": "9. DIREITOS HUMANOS",
+    "text": "A empresa monitora os riscos socioambientais associados aos seus produtos na cadeia de valor?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não consideramos os riscos socioambientais em nossa cadeia de valor.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 0.5,
+        "message": "Os impactos relativos à violação de direitos humanos são o maior risco reputacional para uma empresa, na prática estamos falando de medidas como prevenção ao trabalho análogo à escravidão e ao trabalho infantil. As medidas positivas podem ser a contratação de imigrantes ou o apoio à alguma organização que o faça."
+      },
+      {
+        "label": "Temos um mapeamento de riscos, mas não fiscalizamos.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 0.5
+      },
+      {
+        "label": "Temos um mapeamento de riscos e frequentemente fiscalizamos nossos fornecedores e empresas contratadas.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Exigimos que os nossos fornecedores e contratadas reportem suas práticas de prevenção à violação de direitos humanos.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 2.0
+      },
+      {
+        "label": "Temos normas formais acerca da gestão dos riscos socioambientais em nossa cadeia de valor",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 2.0
+      }
+    ]
+  },
+  {
+    "id": "social_9.3",
+    "category": "social",
+    "subcategory": "9. DIREITOS HUMANOS",
+    "text": "A empresa possui política de contratação de imigrantes ou de pessoas em situação de vulnerabilidade social?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_10.1",
+    "category": "social",
+    "subcategory": "10. PRÁTICAS TRABALHISTAS",
+    "text": "A empresa possui um manual do funcionário formalizado por escrito?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "A empresa não tem um manual do funcionário formalizado por escrito.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Apenas uma declaração de não discriminação e informações gerais sobre os horários de trabalho",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Uma política contra o assédio com mecanismos de denúncia e processos e procedimentos disciplinares, medidas disciplinares e possíveis sanções",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "O manual do funcionário aborda além das questões anteriores políticas sobre questões de remuneração e desempenho, capacitação e licenças",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "O manual do funcionário é construido com a participação das partes interessadas, possui uma declaração de neutralidade sobre o direito dos trabalhadores à negociação coletiva e à liberdade de associação, além de regras sobre direitos humanos como a proibição do trabalho infantil e do trabalho forçado ou compulsório",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_10.2",
+    "category": "social",
+    "subcategory": "10. PRÁTICAS TRABALHISTAS",
+    "text": "Qual o percentual de trabalhadores são terceirizados?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Mais de 70% da força de trabalho.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Mais de 50% da força de trabalho.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Menos de 50% da força de trabalho.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Menos de 20% da força de trabalho.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Não contratamos trabalhadores terceirizados.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_10.3",
+    "category": "social",
+    "subcategory": "10. PRÁTICAS TRABALHISTAS",
+    "text": "Número de trabalhadores temporários no último ano fiscal?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Mais de 70%",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Mais de 50%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Menos de 50%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Menos de 20%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Não contratam trabalhadores temporários.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_10.4",
+    "category": "social",
+    "subcategory": "10. PRÁTICAS TRABALHISTAS",
+    "text": "A empresa oferece benefícios para aumentar a renda dos trabalhadores como a participação nos lucros e resultados ou acréscimo por produtividade.",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": "Sim",
+        "points": 0.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_11.1",
+    "category": "social",
+    "subcategory": "11. SAÚDE E SEGURANÇA",
+    "text": "Quais os benefícios que a empresa oferece para complementar os benefícios governamentais?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Cobertura por invalidez ou seguro contra acidentes.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Seguro de vida.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Seguro odontológico privado",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Seguro de saúde privado.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Seguro de saúde privado complementar com extensão dos benefícios de saúde ao cônjuge e aos filhos",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_11.2",
+    "category": "social",
+    "subcategory": "11. SAÚDE E SEGURANÇA",
+    "text": "São feitas capacitações periódicas sobre o programa de saúde e segurança?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não há um programa formal de saúde e segurança",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Fazemos capacitações em saúde e segurança para todos os trabalhadores, que inclua pelo menos uma simulação de emergência por ano.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Registramos e divulgamos os dados sobre lesões, acidentes, dias perdidos ou dias de ausência para todos os trabalhadores",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Possuímos um sistema formal de denúncia de questões de segurança para que os funcionários possam apresentar suas preocupações relacionadas à segurança",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Existe uma comissão ou um funcionário responsável pela segurança ou um representante do programa de segurança que responda a um funcionário sênior (por exemplo, vice-presidente ou superior)",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_11.3",
+    "category": "social",
+    "subcategory": "11. SAÚDE E SEGURANÇA",
+    "text": "Qual a política da empresa em relação à manipulação de substâncias ou equipamentos perigosos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Todos os trabalhadores são informados dos riscos associados ao manuseio de materiais perigosos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa exige que todos os trabalhadores que estão em contato com materiais perigosos usem equipamentos de proteção, incluindo roupas adequadas e proteção para os olhos e os pés.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Todos os trabalhadores que estão em contato com materiais perigosos recebem capacitação inicial e continuada (pelo menos duas vezes por ano) relacionada ao armazenamento, manuseio e descarte adequados dos materiais.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa monitora a saúde de todos os funcionários que trabalham com materiais perigosos e fornece a eles check-ups de saúde anuais.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "A empresa realiza o monitoramento da saúde dos funcionários que trabalham em contato com materiais perigosos, fornecendo todas as instruções e materiais necessários para que não haja nenhum dano.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_11.4",
+    "category": "social",
+    "subcategory": "11. SAÚDE E SEGURANÇA",
+    "text": "A empresa monitora a incidência de acidentes graves e fatais no ambiente de trabalho?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Monitoramos e fazemos o acompanhamento preventivo.",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Possuímos um forte sistema de prevenção à acidentes de trabalho, além da CIPA.",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Buscamos monitorar e prevenir os danos, assim como a empresa fez investimentos em equipamentos mais seguros.",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Temos os orgulho de reportar que não houveram acidentes no último ano fiscal.",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_12.1",
+    "category": "social",
+    "subcategory": "12. ENGAJAMENTO E DIVERSIDADE",
+    "text": "Qual o percentual dos seus trabalhadores são mulheres?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Até 10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 10% e 15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 15% e 25%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_12.2",
+    "category": "social",
+    "subcategory": "12. ENGAJAMENTO E DIVERSIDADE",
+    "text": "Qual o percentual dos seus trabalhadores são pessoas negras?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Até 10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 10% e 15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 15% e 25%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_12.3",
+    "category": "social",
+    "subcategory": "12. ENGAJAMENTO E DIVERSIDADE",
+    "text": "Qual o percentual dos seus trabalhadores são LGBTQIAPN+?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Até 10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 10% e 15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 15% e 25%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_12.4",
+    "category": "social",
+    "subcategory": "12. ENGAJAMENTO E DIVERSIDADE",
+    "text": "Qual o percentual dos seus trabalhadores possuem mais de 55 anos?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Até 10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 10% e 15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 15% e 25%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_12.5",
+    "category": "social",
+    "subcategory": "12. ENGAJAMENTO E DIVERSIDADE",
+    "text": "Existe uma politica de contratação inclusiva?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_12.6",
+    "category": "social",
+    "subcategory": "12. ENGAJAMENTO E DIVERSIDADE",
+    "text": "Qual o percentual de trabalhadores são Pessoas Com Deficiência (PcDs)?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Até 10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 10% e 15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 15% e 25%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_13.1",
+    "category": "social",
+    "subcategory": "13. FORNECEDORES",
+    "text": "Os critérios socioambientais são considerados na escolha dos fornecedores?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_13.2",
+    "category": "social",
+    "subcategory": "13. FORNECEDORES",
+    "text": "Qual o percentual dos seus fornecedores pertencem ao mercado local?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não monitoramos.",
+        "value": 1.0,
+        "points": 1.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Até 10%",
+        "value": 2.0,
+        "points": 2.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 10% e 15%",
+        "value": 3.0,
+        "points": 3.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Entre 15% e 25%",
+        "value": 4.0,
+        "points": 4.0,
+        "weight": 1.0
+      },
+      {
+        "label": "50% ou mais",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_13.3",
+    "category": "social",
+    "subcategory": "13. FORNECEDORES",
+    "text": "Existe um documento formal que declara o código de conduta de fornecedores ou avaliação periódica?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      }
+    ]
+  },
+  {
+    "id": "social_13.4",
+    "category": "social",
+    "subcategory": "13. FORNECEDORES",
+    "text": "Os fornecedores recebem treinamentos e passam por auditorias periódicas?",
+    "inputType": "radio",
+    "options": [
+      {
+        "label": "Não",
+        "value": "Não",
+        "points": 0.0,
+        "weight": 1.0
+      },
+      {
+        "label": "Sim",
+        "value": 5.0,
+        "points": 5.0,
+        "weight": 1.0
+      },
+      {
+        "label": "PERGUNTAS",
+        "value": "PERGUNTAS",
+        "points": 0,
+        "weight": 1
+      }
+    ]
+  }
+]
