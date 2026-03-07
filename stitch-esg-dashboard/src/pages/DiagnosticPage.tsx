@@ -16,6 +16,8 @@ export const DiagnosticPage: React.FC = () => {
   const [currentStep, setCurrentStep] = useState(0);
   const [answers, setAnswers] = useState<Record<string, number | string>>({});
   const [loading, setLoading] = useState(true);
+  const [isFinishing, setIsFinishing] = useState(false);
+  const [showSuccess, setShowSuccess] = useState(false);
   const [diagnosticId, setDiagnosticId] = useState<string | null>(null);
   const [companyId, setCompanyId] = useState<string | null>(null);
   
@@ -147,11 +149,27 @@ export const DiagnosticPage: React.FC = () => {
     }
   };
 
+  const handleKeyDown = useCallback((e: React.KeyboardEvent | KeyboardEvent) => {
+    if (e.key === 'Enter') {
+      // Prevent default to avoid form submission if any
+      if (answers[currentVisibleQuestion?.id] !== undefined) {
+        handleNext();
+      }
+    }
+  }, [answers, currentVisibleQuestion, handleNext]);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyDown);
+    return () => {
+      window.removeEventListener('keydown', handleKeyDown);
+    };
+  }, [handleKeyDown]);
+
   const finishDiagnostic = async () => {
     if (!user || !diagnosticId || !companyId) return;
     
     await saveProgress(answers, true);
-    setLoading(true);
+    setIsFinishing(true);
 
     try {
       await updateDoc(doc(db, 'diagnostics', diagnosticId), {
@@ -175,11 +193,15 @@ export const DiagnosticPage: React.FC = () => {
 
       if (refreshAuth) await refreshAuth();
 
-      navigate('/environmental');
+      setShowSuccess(true);
+      
+      // Brief delay to show success state
+      setTimeout(() => {
+        navigate('/environmental');
+      }, 2000);
     } catch (err) {
       console.error("Error finishing diagnostic:", err);
-    } finally {
-      setLoading(false);
+      setIsFinishing(false);
     }
   };
 
@@ -241,7 +263,10 @@ export const DiagnosticPage: React.FC = () => {
                 <Rocket size={20} /> Próximo Passo!
               </h4>
               <p className="text-slate-900/80 text-xs font-bold uppercase tracking-wide leading-relaxed">
-                Continue na seção {currentCategory === 'environmental' ? 'Ambiental' : currentCategory === 'social' ? 'Social' : 'Governança'} e conquiste mais XP.
+                {currentCategory === 'form' 
+                  ? "Conclua a sessão de Cadastro para ganhar 500 de XP e avançar para a aba Ambiental."
+                  : `Continue na seção ${currentCategory === 'environmental' ? 'Ambiental' : currentCategory === 'social' ? 'Social' : 'Governança'} e conquiste mais XP.`
+                }
               </p>
             </div>
             <Button 
@@ -319,8 +344,10 @@ export const DiagnosticPage: React.FC = () => {
                     type="text"
                     value={(answers[currentVisibleQuestion.id] as string) || ''}
                     onChange={(e) => handleTextChange(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="w-full p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary text-sm"
                     placeholder="Digite sua resposta..."
+                    autoFocus
                   />
                 )}
 
@@ -328,6 +355,7 @@ export const DiagnosticPage: React.FC = () => {
                   <select
                     value={(answers[currentVisibleQuestion.id] as string) || ''}
                     onChange={(e) => handleOptionSelect(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     className="w-full p-4 bg-slate-50 dark:bg-slate-800 border-2 border-slate-200 dark:border-slate-700 rounded-xl focus:ring-2 focus:ring-primary text-sm"
                   >
                     <option value="">Selecione uma opção</option>
@@ -351,15 +379,41 @@ export const DiagnosticPage: React.FC = () => {
                 </Button>
                 <Button 
                   onClick={handleNext}
-                  disabled={answers[currentVisibleQuestion.id] === undefined}
-                  isLoading={loading}
-                  className="px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl shadow-emerald-500/20"
+                  disabled={answers[currentVisibleQuestion.id] === undefined || isFinishing}
+                  isLoading={isFinishing && !showSuccess}
+                  className={`px-10 py-4 rounded-2xl font-black uppercase text-[10px] tracking-[0.2em] shadow-xl transition-all duration-300
+                    ${showSuccess 
+                      ? 'bg-emerald-500 text-white shadow-emerald-500/40' 
+                      : 'shadow-emerald-500/20'}
+                  `}
                 >
-                  {currentStep === visibleQuestions.length - 1 ? 'Finalizar e Continuar' : 'Próximo'}
-                  {currentStep !== visibleQuestions.length - 1 && <ChevronRight size={18} className="ml-2" />}
+                  {showSuccess ? (
+                    <span className="flex items-center gap-2">
+                      <Check size={18} strokeWidth={4} /> Pronto!
+                    </span>
+                  ) : currentStep === visibleQuestions.length - 1 ? (
+                    'Finalizar e Continuar'
+                  ) : (
+                    'Próximo'
+                  )}
+                  {!showSuccess && currentStep !== visibleQuestions.length - 1 && <ChevronRight size={18} className="ml-2" />}
                 </Button>
               </div>
             </Card>
+
+            {showSuccess && (
+              <div className="fixed inset-0 flex items-center justify-center z-[100] animate-in fade-in zoom-in duration-300 bg-slate-900/20 backdrop-blur-sm">
+                <div className="bg-white dark:bg-slate-900 p-8 rounded-3xl shadow-2xl border-2 border-primary/20 flex flex-col items-center text-center max-w-sm mx-4">
+                  <div className="w-20 h-20 bg-primary/10 text-primary rounded-full flex items-center justify-center mb-6 animate-bounce">
+                    <Check size={40} strokeWidth={4} />
+                  </div>
+                  <h3 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter mb-2">Salvo com Sucesso!</h3>
+                  <p className="text-slate-500 dark:text-slate-400 font-bold uppercase text-[10px] tracking-widest leading-relaxed">
+                    Seu diagnóstico foi registrado. Desbloqueando trilha Ambiental...
+                  </p>
+                </div>
+              </div>
+            )}
 
             <div className="bg-primary/5 border-2 border-dashed border-primary/20 p-8 rounded-3xl">
               <div className="flex gap-6">

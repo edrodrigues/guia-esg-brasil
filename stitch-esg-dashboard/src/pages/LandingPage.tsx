@@ -193,15 +193,19 @@ export const LandingPage: React.FC = () => {
             <div className="flex items-center gap-8 text-[8px] font-black text-slate-400 uppercase tracking-[0.2em]">
               <p>© {new Date().getFullYear()} GUIA ESG BRASIL. Todos os direitos reservados.</p>
               <div className="hidden sm:flex items-center gap-6">
-                <a href="#" className="hover:text-primary transition-colors">Privacidade</a>
-                <a href="#" className="hover:text-primary transition-colors">Termos</a>
-                <a href="#" className="hover:text-primary transition-colors">Compliance</a>
+                <a href="/privacidade" className="hover:text-primary transition-colors">Privacidade</a>
+                <a href="/termos" className="hover:text-primary transition-colors">Termos</a>
+                <a href="/compliance" className="hover:text-primary transition-colors">Compliance</a>
               </div>
             </div>
-            
+
             <div className="flex items-center gap-3 px-4 py-2 bg-slate-50 dark:bg-slate-900 rounded-full border border-slate-100 dark:border-slate-800 shadow-inner">
               <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></span>
               <span className="text-[8px] font-black text-slate-500 uppercase tracking-widest">Sistemas Verificados por Bureau Veritas</span>
+            </div>
+
+            <div className="text-[8px] font-black text-slate-400 uppercase tracking-widest">
+              Desenvolvido por <a href="https://futurereadylabs.com.br/" target="_blank" rel="noopener noreferrer" className="text-primary hover:underline">Future Ready Labs</a>
             </div>
           </div>
         </div>

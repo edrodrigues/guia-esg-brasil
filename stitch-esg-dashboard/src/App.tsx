@@ -19,6 +19,9 @@ const RankingPage = lazy(() => import('./pages/RankingPage').then(m => ({ defaul
 const EnvironmentalPage = lazy(() => import('./pages/EnvironmentalPage').then(m => ({ default: m.EnvironmentalPage })));
 const SocialPage = lazy(() => import('./pages/SocialPage').then(m => ({ default: m.SocialPage })));
 const GovernancePage = lazy(() => import('./pages/GovernancePage').then(m => ({ default: m.GovernancePage })));
+const PrivacidadePage = lazy(() => import('./pages/PrivacidadePage').then(m => ({ default: m.PrivacidadePage })));
+const TermosPage = lazy(() => import('./pages/TermosPage').then(m => ({ default: m.TermosPage })));
+const CompliancePage = lazy(() => import('./pages/CompliancePage').then(m => ({ default: m.CompliancePage })));
 
 // Loading Component
 const PageLoader = () => (
@@ -41,6 +44,9 @@ function AppRoutes() {
       <Routes>
         {/* Public Landing Page */}
         <Route path="/" element={<LandingPage />} />
+        <Route path="/privacidade" element={<PrivacidadePage />} />
+        <Route path="/termos" element={<TermosPage />} />
+        <Route path="/compliance" element={<CompliancePage />} />
         
         {/* Auth Pages - Redirect if already logged in */}
         <Route path="/login" element={<PublicRoute><LoginPage /></PublicRoute>} />
