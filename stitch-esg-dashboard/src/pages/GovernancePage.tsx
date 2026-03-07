@@ -1,14 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { Card } from '../components/ui/Card';
-import { Button } from '../components/ui/Button';
-import { Gavel, TrendingUp, Scale, ShieldAlert, FileCheck, Save } from 'lucide-react';
+import { Gavel, TrendingUp, Scale, ShieldAlert, FileCheck } from 'lucide-react';
 import { AreaChart, BadgeDelta } from '@tremor/react';
 import { useAuth } from '../context/useAuth';
-import { doc, getDoc, updateDoc, Timestamp } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Company } from '../types';
-import { calculateESGDelta } from '../utils/scoreCalculator';
 
 const chartData = [
   { date: 'JAN', 'Conformidade': 90 },
@@ -24,9 +22,6 @@ export const GovernancePage: React.FC = () => {
   const { user } = useAuth();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-
-  const [complianceScore, setComplianceScore] = useState(95);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -39,10 +34,6 @@ export const GovernancePage: React.FC = () => {
           if (companyDoc.exists()) {
             const companyData = { id: companyDoc.id, ...companyDoc.data() } as Company;
             setCompany(companyData);
-            
-            if (companyData.goals) {
-              setComplianceScore(companyData.goals.etica);
-            }
           }
         }
       } catch (err) {
@@ -53,51 +44,6 @@ export const GovernancePage: React.FC = () => {
     };
     fetchData();
   }, [user]);
-
-  const handleSaveScores = async () => {
-    if (!company) return;
-    
-    setSaving(true);
-    try {
-      const previousScores = company.esgScores;
-      const newGovernanceScore = complianceScore;
-      
-      const newScores = {
-        ...previousScores,
-        governance: newGovernanceScore,
-      };
-
-      const newDelta = calculateESGDelta(newScores, previousScores);
-      
-      const newGoals = {
-        energia: company.goals?.energia || 0,
-        residuos: company.goals?.residuos || 0,
-        diversidade: company.goals?.diversidade || 0,
-        etica: complianceScore,
-      };
-
-      await updateDoc(doc(db, 'companies', company.id), {
-        'esgScores.governance': newGovernanceScore,
-        esgDelta: newDelta,
-        goals: newGoals,
-        lastGovernanceUpdate: Timestamp.now(),
-      });
-
-      setCompany(prev => prev ? {
-        ...prev,
-        esgScores: newScores,
-        esgDelta: newDelta,
-        goals: newGoals,
-      } : null);
-
-      alert('Dados salvos com sucesso!');
-    } catch (err) {
-      console.error("Error saving governance scores:", err);
-      alert('Erro ao salvar dados');
-    } finally {
-      setSaving(false);
-    }
-  };
 
   if (loading) {
     return (

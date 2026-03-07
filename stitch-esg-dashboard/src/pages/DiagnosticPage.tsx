@@ -136,13 +136,13 @@ export const DiagnosticPage: React.FC = () => {
     debouncedSave(newAnswers);
   };
 
-  const handleNext = async () => {
+  const handleNext = useCallback(async () => {
     if (currentStep < visibleQuestions.length - 1) {
       setCurrentStep(prev => prev + 1);
     } else {
       finishDiagnostic();
     }
-  };
+  }, [currentStep, visibleQuestions.length, finishDiagnostic]);
 
   const handlePrev = () => {
     if (currentStep > 0) {
@@ -166,7 +166,7 @@ export const DiagnosticPage: React.FC = () => {
     };
   }, [handleKeyDown]);
 
-  const finishDiagnostic = async () => {
+  const finishDiagnostic = useCallback(async () => {
     if (!user || !diagnosticId || !companyId) return;
     
     await saveProgress(answers, true);
@@ -195,7 +195,7 @@ export const DiagnosticPage: React.FC = () => {
       const months = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO', 'SET', 'OUT', 'NOV', 'DEZ'];
       const currentMonth = months[new Date().getMonth()];
       
-      let evolutionData = companyOldData.evolutionData || [];
+      const evolutionData = companyOldData.evolutionData || [];
       const monthIndex = evolutionData.findIndex((d: { month: string }) => d.month === currentMonth);
       if (monthIndex >= 0) {
         evolutionData[monthIndex].score = esgAvg;
@@ -231,7 +231,7 @@ export const DiagnosticPage: React.FC = () => {
       console.error("Error finishing diagnostic:", err);
       setIsFinishing(false);
     }
-  };
+  }, [user, diagnosticId, companyId, answers, saveProgress, refreshAuth, navigate]);;
 
   const navigateToCategory = (cat: 'form' | 'environmental' | 'social' | 'governance') => {
     const visibleIndex = visibleQuestions.findIndex(q => q.category === cat);

@@ -9,7 +9,6 @@ export const calculateESGScore = (
   let environmentalScore = 0;
   let socialScore = 0;
   let governanceScore = 0;
-  let totalQuestions = 0;
 
   const formKeys = Object.keys(formData);
   
@@ -21,13 +20,10 @@ export const calculateESGScore = (
       
       if (key.includes('environmental') || key.startsWith('E')) {
         environmentalScore += normalizedScore;
-        totalQuestions++;
       } else if (key.includes('social') || key.startsWith('S')) {
         socialScore += normalizedScore;
-        totalQuestions++;
       } else if (key.includes('governance') || key.startsWith('G')) {
         governanceScore += normalizedScore;
-        totalQuestions++;
       }
     }
   });
