@@ -24,9 +24,9 @@ export const DiagnosticPage: React.FC = () => {
 
   const saveTimeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const lastSavedRef = useRef<string>('');
+  const questionnaireRef = useRef<HTMLDivElement>(null);
 
-  const isQuestionVisible = useCallback((question: typeof diagnosticQuestions[0]) => {
-    if (!question.dependsOn) return true;
+  const isQuestionVisible = useCallback((question: typeof diagnosticQuestions[0]) => {    if (!question.dependsOn) return true;
     return answers[question.dependsOn.questionId] === question.dependsOn.value;
   }, [answers]);
 
@@ -135,7 +135,7 @@ export const DiagnosticPage: React.FC = () => {
     };
 
     loadDiagnostic();
-  }, [user]);
+  }, [user, visibleQuestions]);
 
   const handleOptionSelect = (value: number | string) => {
     const newAnswers = { ...answers, [currentVisibleQuestion.id]: value };
@@ -250,6 +250,10 @@ export const DiagnosticPage: React.FC = () => {
     };
   }, [handleKeyDown]);
 
+  const scrollToQuestionnaire = () => {
+    questionnaireRef.current?.scrollIntoView({ behavior: 'smooth' });
+  };
+
   const navigateToCategory = (cat: 'form' | 'environmental' | 'social' | 'governance') => {
     const visibleIndex = visibleQuestions.findIndex(q => q.category === cat);
     if (visibleIndex !== -1) {
@@ -308,14 +312,14 @@ export const DiagnosticPage: React.FC = () => {
                 <Rocket size={20} /> Próximo Passo!
               </h4>
               <p className="text-slate-900/80 text-xs font-bold uppercase tracking-wide leading-relaxed">
-                Continue na seção {currentCategory === 'environmental' ? 'Ambiental' : currentCategory === 'social' ? 'Social' : 'Governança'} e conquiste mais XP.
+                Responda o questionário dessa página para ganhar 500 XP e avançar à próxima página.
               </p>
             </div>
-            <Button
+            <Button 
               className="mt-6 bg-white text-primary font-black py-3 px-4 rounded-2xl flex items-center justify-center gap-2 hover:bg-slate-50 transition-all uppercase text-[10px] tracking-[0.2em] shadow-lg relative z-10"
-              onClick={() => { }}
+              onClick={scrollToQuestionnaire}
             >
-              Retomar Missão
+              Iniciar Missão
             </Button>
           </div>
         </div>
@@ -331,7 +335,7 @@ export const DiagnosticPage: React.FC = () => {
           </button>
         </div>
 
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-10" ref={questionnaireRef}>
           <div className="lg:col-span-12 space-y-8 max-w-4xl mx-auto w-full">
             <Card className="border-b-8">
               <div className="mb-8">

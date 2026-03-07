@@ -5,7 +5,7 @@ import { EvolutionChart } from '../components/dashboard/EvolutionChart';
 import { RecentMissions } from '../components/dashboard/RecentMissions';
 import { HeroJourney } from '../components/dashboard/HeroJourney';
 import { LevelUpModal, type Particle } from '../components/dashboard/LevelUpModal';
-import { Leaf, Users, Gavel, PlusCircle, Mail, CloudSync, Zap } from 'lucide-react';
+import { Leaf, Users, Gavel } from 'lucide-react';
 import { BarChart, BadgeDelta, ProgressCircle, CategoryBar } from '@tremor/react';
 import { useAuth } from '../context/useAuth';
 import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
@@ -20,8 +20,8 @@ export const DashboardPage: React.FC = () => {
   const [loading, setLoading] = useState(true);
   
   const [showLevelUp, setShowLevelUp] = useState(false);
-  const [newLevelInfo, setNewLevelInfo] = useState({ level: 1, name: 'Elementar' });
-  const [particles, setParticles] = useState<Particle[]>([]);
+  const [newLevelInfo] = useState({ level: 1, name: 'Elementar' });
+  const [particles] = useState<Particle[]>([]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -59,14 +59,6 @@ export const DashboardPage: React.FC = () => {
   const chartData = company?.evolutionData || [];
 
   const goalsData = getGoalsDataForChart(company?.goals);
-
-  const getLevelInfo = (xp: number) => {
-    if (xp >= 4000) return { level: 5, name: 'Transformador' };
-    if (xp >= 3000) return { level: 4, name: 'Proativo' };
-    if (xp >= 2000) return { level: 3, name: 'Engajado' };
-    if (xp >= 1000) return { level: 2, name: 'Consciente' };
-    return { level: 1, name: 'Elementar' };
-  };
 
   const esgAverage = company ? Math.round(
     (company.esgScores.environmental + company.esgScores.social + company.esgScores.governance) / 3
