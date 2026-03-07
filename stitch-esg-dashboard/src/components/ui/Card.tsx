@@ -6,7 +6,7 @@ interface CardProps {
   title?: string;
   subtitle?: string;
   headerAction?: React.ReactNode;
-  variant?: 'default' | 'chunky';
+  variant?: 'default' | 'chunky' | 'glass';
 }
 
 export const Card: React.FC<CardProps> = ({
@@ -17,10 +17,11 @@ export const Card: React.FC<CardProps> = ({
   headerAction,
   variant = 'default',
 }) => {
-  const baseStyles = 'bg-white dark:bg-slate-900 rounded-xl overflow-hidden transition-all';
+  const baseStyles = 'rounded-xl overflow-hidden transition-all';
   const variants = {
-    default: 'border border-slate-200 dark:border-slate-800 shadow-sm',
-    chunky: 'chunky-card',
+    default: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm',
+    chunky: 'bg-white dark:bg-slate-900 chunky-card',
+    glass: 'bg-white/70 dark:bg-slate-900/70 backdrop-blur-md border border-white/20 dark:border-white/10 shadow-xl',
   };
 
   return (
