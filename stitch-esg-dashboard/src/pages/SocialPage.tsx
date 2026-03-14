@@ -1,30 +1,46 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { Card } from '../components/ui/Card';
 import { Users, TrendingUp, Heart, GraduationCap, ShieldCheck } from 'lucide-react';
 import { AreaChart, BadgeDelta } from '@tremor/react';
 import { useAuth } from '../context/useAuth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import type { Company } from '../types';
+import type { Company, Mission } from '../types';
 
-const chartData = [
-  { date: 'JAN', 'Engajamento': 65 },
-  { date: 'FEV', 'Engajamento': 68 },
-  { date: 'MAR', 'Engajamento': 72 },
-  { date: 'ABR', 'Engajamento': 70 },
-  { date: 'MAI', 'Engajamento': 75 },
-  { date: 'JUN', 'Engajamento': 82 },
-  { date: 'JUL', 'Engajamento': 88 },
+const DEFAULT_CHART_DATA = [
+  { date: 'JAN', 'Engajamento': 0 },
+  { date: 'FEV', 'Engajamento': 0 },
+  { date: 'MAR', 'Engajamento': 0 },
+  { date: 'ABR', 'Engajamento': 0 },
+  { date: 'MAI', 'Engajamento': 0 },
+  { date: 'JUN', 'Engajamento': 0 },
+  { date: 'JUL', 'Engajamento': 0 },
 ];
 
 export const SocialPage: React.FC = () => {
   const { user } = useAuth();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
+  const [missions, setMissions] = useState<Mission[]>([]);
 
   const [diversityScore, setDiversityScore] = useState(45);
-  const [trainingScore] = useState(88);
+  const trainingScore = company?.socialSubScores?.treinamento || 88;
+
+  // Chart data dinâmico baseado em dados reais
+  const chartData = useMemo(() => {
+    if (!company?.evolutionData || company.evolutionData.length === 0) {
+      return DEFAULT_CHART_DATA.map(item => ({
+        ...item,
+        'Engajamento': company?.esgScores?.social || 0,
+      }));
+    }
+    
+    return company.evolutionData.map(point => ({
+      date: point.month,
+      'Engajamento': point.social,
+    }));
+  }, [company?.evolutionData, company?.esgScores?.social]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -42,6 +58,21 @@ export const SocialPage: React.FC = () => {
               setDiversityScore(companyData.goals.diversidade);
             }
           }
+
+          // Buscar missões sociais reais do Firestore
+          const missionsQuery = query(
+            collection(db, 'missions'),
+            where('companyId', '==', companyId),
+            where('type', '==', 'S'),
+            orderBy('deadline', 'asc'),
+            limit(5)
+          );
+          const missionsSnap = await getDocs(missionsQuery);
+          const missionsList = missionsSnap.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          } as Mission));
+          setMissions(missionsList);
         }
       } catch (err) {
         console.error("Error fetching social data:", err);
@@ -141,26 +172,48 @@ export const SocialPage: React.FC = () => {
 
           <Card title="Próximas Missões Sociais">
             <div className="space-y-4">
-              {[
-                { icon: ShieldCheck, title: 'Saúde Mental', points: '+300 XP', status: 'Em Curso' },
-                { icon: Users, title: 'Censo Diversidade', points: '+450 XP', status: 'Pendente' },
-              ].map((mission, i) => (
-                <div key={i} className="flex items-center justify-between p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group cursor-pointer">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl group-hover:bg-social/10 group-hover:text-social transition-all">
-                      <mission.icon size={24} />
+              {missions.length > 0 ? (
+                missions.map((mission) => (
+                  <div key={mission.id} className="flex items-center justify-between p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group cursor-pointer">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl group-hover:bg-social/10 group-hover:text-social transition-all">
+                        <ShieldCheck size={24} />
+                      </div>
+                      <div>
+                        <p className="font-black text-xs text-slate-900 dark:text-slate-100 uppercase tracking-tight">{mission.title}</p>
+                        <p className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 italic">+500 XP</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-black text-xs text-slate-900 dark:text-slate-100 uppercase tracking-tight">{mission.title}</p>
-                      <p className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 italic">{mission.points}</p>
-                    </div>
+                    <span className={`px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest border-2 ${mission.status === 'em_curso' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-100'
+                      }`}>
+                      {mission.status === 'em_curso' ? 'Em Curso' : mission.status === 'concluido' ? 'Concluído' : 'Pendente'}
+                    </span>
                   </div>
-                  <span className={`px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest border-2 ${mission.status === 'Em Curso' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-100'
-                    }`}>
-                    {mission.status}
-                  </span>
-                </div>
-              ))}
+                ))
+              ) : (
+                <>
+                  {[
+                    { icon: ShieldCheck, title: 'Saúde Mental', points: '+300 XP', status: 'Em Curso' },
+                    { icon: Users, title: 'Censo Diversidade', points: '+450 XP', status: 'Pendente' },
+                  ].map((mission, i) => (
+                    <div key={i} className="flex items-center justify-between p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group cursor-pointer">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl group-hover:bg-social/10 group-hover:text-social transition-all">
+                          <mission.icon size={24} />
+                        </div>
+                        <div>
+                          <p className="font-black text-xs text-slate-900 dark:text-slate-100 uppercase tracking-tight">{mission.title}</p>
+                          <p className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 italic">{mission.points}</p>
+                        </div>
+                      </div>
+                      <span className={`px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest border-2 ${mission.status === 'Em Curso' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-100'
+                        }`}>
+                        {mission.status}
+                      </span>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </Card>
         </div>

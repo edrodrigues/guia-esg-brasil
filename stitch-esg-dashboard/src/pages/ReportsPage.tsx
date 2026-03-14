@@ -28,6 +28,16 @@ import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import type { Company } from '../types';
 import { getDeltaType } from '../utils/scoreCalculator';
+import { 
+  getRegionalAverages, 
+  getSectorComparison, 
+  calculateCarbonTrend,
+  getRegionFromState,
+  DEFAULT_BENCHMARKS,
+  type RegionalAverages,
+  type SectorComparison
+} from '../services/regionalData';
+import { downloadESGReport } from '../services/pdfExport';
 
 const dataFormatter = (number: number) => `${Intl.NumberFormat('pt-BR').format(number).toString()} t`;
 
@@ -36,9 +46,12 @@ export const ReportsPage: React.FC = () => {
   const [activeTab, setActiveTab] = useState('environmental');
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
+  const [exporting, setExporting] = useState(false);
+  const [regionalAverages, setRegionalAverages] = useState<RegionalAverages | null>(null);
+  const [sectorComparison, setSectorComparison] = useState<SectorComparison | null>(null);
 
   useEffect(() => {
-    const fetchCompany = async () => {
+    const fetchCompanyAndComparisons = async () => {
       if (!user) return;
       try {
         const userDoc = await getDoc(doc(db, 'users', user.uid));
@@ -46,7 +59,20 @@ export const ReportsPage: React.FC = () => {
           const companyId = userDoc.data().companyId;
           const companyDoc = await getDoc(doc(db, 'companies', companyId));
           if (companyDoc.exists()) {
-            setCompany({ id: companyDoc.id, ...companyDoc.data() } as Company);
+            const companyData = { id: companyDoc.id, ...companyDoc.data() } as Company;
+            setCompany(companyData);
+            
+            // Buscar comparações regionais e setoriais
+            const state = (companyData as unknown as { formData?: Record<string, string> }).formData?.['form_1.9'] || '';
+            const region = getRegionFromState(state);
+            
+            const [regionalData, sectorData] = await Promise.all([
+              getRegionalAverages(region),
+              getSectorComparison(companyData)
+            ]);
+            
+            setRegionalAverages(regionalData);
+            setSectorComparison(sectorData);
           }
         }
       } catch (err) {
@@ -55,7 +81,7 @@ export const ReportsPage: React.FC = () => {
         setLoading(false);
       }
     };
-    fetchCompany();
+    fetchCompanyAndComparisons();
   }, [user]);
 
   const formData = useMemo(() => 
@@ -100,35 +126,17 @@ export const ReportsPage: React.FC = () => {
 
     // Regional
     const state = String(formData['form_1.9'] || '');
-    const sudeste = ['SP', 'RJ', 'MG', 'ES'];
-    const sul = ['PR', 'SC', 'RS'];
-    const centroOeste = ['MS', 'MT', 'GO', 'DF'];
-    
-    let region = 'Outros';
-    if (sudeste.includes(state)) region = 'Sudeste';
-    else if (sul.includes(state)) region = 'Sul';
-    else if (centroOeste.includes(state)) region = 'Centro-Oeste';
-    else if (state) region = 'Norte/NE';
+    const region = getRegionFromState(state);
 
+    // Dados comparativos
     const regionalData = [
-      { name: 'Sudeste', value: region === 'Sudeste' ? 100 : 0 },
-      { name: 'Sul', value: region === 'Sul' ? 100 : 0 },
-      { name: 'Centro-Oeste', value: region === 'Centro-Oeste' ? 100 : 0 },
-      { name: 'Norte/NE', value: region === 'Norte/NE' ? 100 : 0 },
-    ].filter(d => d.value > 0);
+      { name: 'Sua Empresa', value: company?.esgScores.environmental || 0 },
+      { name: 'Média Regional', value: regionalAverages?.avgEnvironmental || DEFAULT_BENCHMARKS.environmental },
+      { name: 'Média Setor', value: sectorComparison?.avgScores.environmental || DEFAULT_BENCHMARKS.environmental },
+    ];
 
-    if (regionalData.length === 0) {
-      regionalData.push({ name: 'Não informado', value: 100 });
-    }
-
-    // Carbon Chart Simulation
-    const monthsList = ['JAN', 'FEV', 'MAR', 'ABR', 'MAI', 'JUN', 'JUL', 'AGO'];
-    const carbonHistory = monthsList.map((m) => ({
-      month: m,
-      'Toneladas': totalCarbon > 0 
-        ? Math.max(0.1, (totalCarbon / 8) * (1 + (Math.random() * 0.4 - 0.2)))
-        : 0
-    }));
+    // Carbon Chart com tendência calculada
+    const carbonHistory = calculateCarbonTrend(totalCarbon, company?.evolutionData);
 
     return {
       totalCarbon,
@@ -138,15 +146,49 @@ export const ReportsPage: React.FC = () => {
       carbonHistory,
       escopo1,
       escopo2,
-      escopo3
+      escopo3,
+      region
     };
-  }, [formData]);
+  }, [formData, company, regionalAverages, sectorComparison]);
 
   const tabs = [
     { id: 'environmental', label: 'Meio Ambiente' },
     { id: 'social', label: 'Social' },
     { id: 'governance', label: 'Governança' },
   ];
+
+  const handleExportPDF = async () => {
+    if (!company) return;
+    
+    setExporting(true);
+    try {
+      await downloadESGReport({
+        company,
+        totalCarbon: reportsData.totalCarbon,
+        renewableEnergy: reportsData.renewableEnergy,
+        wasteDiverted: reportsData.wasteDiverted,
+        escopo1: reportsData.escopo1,
+        escopo2: reportsData.escopo2,
+        escopo3: reportsData.escopo3,
+        regionalComparison: regionalAverages ? {
+          region: reportsData.region,
+          companyScore: company.esgScores.environmental,
+          regionalAverage: regionalAverages.avgEnvironmental
+        } : undefined,
+        sectorComparison: sectorComparison ? {
+          industry: company.industry || 'Não informado',
+          companyScore: Math.round((company.esgScores.environmental + company.esgScores.social + company.esgScores.governance) / 3),
+          sectorAverage: sectorComparison.avgScores.total,
+          percentile: sectorComparison.percentile
+        } : undefined
+      });
+    } catch (error) {
+      console.error('Error exporting PDF:', error);
+      alert('Erro ao exportar PDF. Tente novamente.');
+    } finally {
+      setExporting(false);
+    }
+  };
 
   if (loading) {
     return (
@@ -172,17 +214,24 @@ export const ReportsPage: React.FC = () => {
               Impacto ESG: {company?.name || 'Sua Empresa'}
             </h1>
             <p className="mt-4 text-slate-500 dark:text-slate-400 text-lg leading-relaxed font-medium">
-              Análise dinâmica baseada no seu diagnóstico mais recente. Esta página reflete seus dados reais de sustentabilidade.
+              Análise dinâmica baseada no seu diagnóstico mais recente. 
+              {regionalAverages && (
+                <span> Comparado com {regionalAverages.totalCompanies} empresas na região {reportsData.region}.</span>
+              )}
             </p>
           </div>
           <div className="flex flex-wrap gap-3">
             <Button variant="outline" className="gap-2 border-2 px-5 py-6 rounded-2xl h-auto" onClick={() => window.print()}>
               <Database size={18} />
-              Imprimir PDF
+              Imprimir
             </Button>
-            <Button className="gap-2 px-6 py-6 rounded-2xl h-auto shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all">
+            <Button 
+              className="gap-2 px-6 py-6 rounded-2xl h-auto shadow-xl shadow-primary/20 hover:scale-105 active:scale-95 transition-all"
+              onClick={handleExportPDF}
+              isLoading={exporting}
+            >
               <FileDown size={18} />
-              Exportar Livro
+              Exportar PDF
             </Button>
           </div>
         </div>
@@ -245,14 +294,76 @@ export const ReportsPage: React.FC = () => {
           </Card>
         </div>
 
+        {/* Benchmarking Cards */}
+        {(regionalAverages || sectorComparison) && (
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
+            {regionalAverages && (
+              <Card className="p-6 border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase">Comparação Regional</h4>
+                  <span className="text-[10px] font-black text-slate-400 uppercase">{reportsData.region}</span>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-bold text-slate-600">Sua Empresa</span>
+                    <span className="text-2xl font-black text-primary">{company?.esgScores.environmental}</span>
+                  </div>
+                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-primary rounded-full" 
+                      style={{ width: `${Math.min(100, (company?.esgScores.environmental || 0))}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-500">Média Regional</span>
+                    <span className="font-bold">{regionalAverages.avgEnvironmental}</span>
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-500">Empresas na Região</span>
+                    <span className="font-bold">{regionalAverages.totalCompanies}</span>
+                  </div>
+                </div>
+              </Card>
+            )}
+            
+            {sectorComparison && (
+              <Card className="p-6 border-slate-100 dark:border-slate-800">
+                <div className="flex items-center justify-between mb-4">
+                  <h4 className="text-lg font-black text-slate-900 dark:text-white uppercase">Ranking Setorial</h4>
+                  <span className="text-[10px] font-black text-slate-400 uppercase">{company?.industry}</span>
+                </div>
+                <div className="space-y-4">
+                  <div className="flex justify-between items-center">
+                    <span className="text-sm font-bold text-slate-600">Sua Posição</span>
+                    <span className="text-2xl font-black text-primary">#{sectorComparison.companyRank}</span>
+                  </div>
+                  <p className="text-sm text-slate-500">
+                    Você está no <span className="font-bold text-primary">Top {100 - sectorComparison.percentile}%</span> do setor
+                  </p>
+                  <div className="h-2 bg-slate-100 rounded-full overflow-hidden">
+                    <div 
+                      className="h-full bg-emerald-500 rounded-full" 
+                      style={{ width: `${sectorComparison.percentile}%` }}
+                    />
+                  </div>
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-slate-500">Total de Empresas</span>
+                    <span className="font-bold">{sectorComparison.totalCompanies}</span>
+                  </div>
+                </div>
+              </Card>
+            )}
+          </div>
+        )}
+
         {/* Visualization & Details */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-8 mb-12">
           {/* Main Chart Area */}
           <Card className="lg:col-span-2 p-2 border-slate-100 dark:border-slate-800 h-full flex flex-col">
             <div className="flex items-center justify-between mb-8">
               <div>
-                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">Histórico de Carbono (Simulado)</h4>
-                <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">Estimativa mensal baseada no reporte anual</p>
+                <h4 className="text-2xl font-black text-slate-900 dark:text-white uppercase tracking-tighter">Histórico de Carbono</h4>
+                <p className="text-slate-400 font-bold text-xs uppercase tracking-widest mt-1">Comparativo mensal</p>
               </div>
             </div>
 
@@ -261,12 +372,27 @@ export const ReportsPage: React.FC = () => {
                 className="h-full"
                 data={reportsData.carbonHistory}
                 index="month"
-                categories={['Toneladas']}
-                colors={['emerald']}
+                categories={['companyValue', 'sectorAverage', 'regionalAverage']}
+                colors={['emerald', 'amber', 'blue']}
                 valueFormatter={dataFormatter}
                 yAxisWidth={48}
                 showAnimation={true}
               />
+            </div>
+
+            <div className="mt-6 flex items-center gap-6 text-[10px] font-black uppercase tracking-widest">
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-emerald-500 rounded"></div>
+                <span>Sua Empresa</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-amber-500 rounded"></div>
+                <span>Média Setor</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <div className="w-3 h-3 bg-blue-500 rounded"></div>
+                <span>Média Regional</span>
+              </div>
             </div>
 
             <div className="mt-10 grid grid-cols-2 md:grid-cols-4 gap-4">
@@ -344,14 +470,14 @@ export const ReportsPage: React.FC = () => {
 
         {/* Regional Impact Map & Stats */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
-          <Card className="p-2 border-slate-100 dark:border-slate-800 flex flex-col" title="Presença Regional">
+          <Card className="p-2 border-slate-100 dark:border-slate-800 flex flex-col" title="Comparativo de Performance">
             <div className="flex flex-col md:flex-row items-center justify-between gap-8 mt-4">
               <DonutChart
                 className="h-40"
                 data={reportsData.regionalData}
                 category="value"
                 index="name"
-                colors={['emerald', 'teal', 'amber', 'rose']}
+                colors={['emerald', 'amber', 'blue']}
                 showAnimation={true}
               />
               <List className="flex-1">

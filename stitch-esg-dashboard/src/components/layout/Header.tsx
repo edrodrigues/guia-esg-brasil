@@ -1,10 +1,12 @@
 import React from 'react';
-import { Search, Bell, Settings, User, Building2, LogOut, ChevronDown } from 'lucide-react';
+import { Search, Bell, Settings, User, Building2, LogOut, ChevronDown, WifiOff } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../../context/useAuth';
+import { useOfflineStatus } from '../../hooks/useOfflineStatus';
 
 export const Header: React.FC = () => {
   const { user, signOut } = useAuth();
+  const { isOffline } = useOfflineStatus();
   
   return (
     <header className="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 border-b border-slate-200 dark:border-slate-800 px-8 flex items-center justify-between z-40">
@@ -20,6 +22,16 @@ export const Header: React.FC = () => {
       </div>
 
       <div className="flex items-center gap-4">
+        {/* Offline Indicator */}
+        {isOffline && (
+          <div className="flex items-center gap-2 px-3 py-1.5 bg-amber-100 dark:bg-amber-900/30 border border-amber-200 dark:border-amber-800 rounded-xl">
+            <WifiOff size={16} className="text-amber-600 dark:text-amber-500" />
+            <span className="text-xs font-black text-amber-700 dark:text-amber-400 uppercase tracking-wider hidden sm:inline">
+              Offline
+            </span>
+          </div>
+        )}
+        
         <button className="p-2 rounded-xl bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors relative group">
           <Bell size={20} className="text-slate-600 dark:text-slate-400 group-hover:text-primary transition-colors" />
           <span className="absolute top-2 right-2 w-2 h-2 bg-rose-500 rounded-full border-2 border-white dark:border-slate-900"></span>

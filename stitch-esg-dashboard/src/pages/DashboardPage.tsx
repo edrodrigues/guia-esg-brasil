@@ -8,15 +8,14 @@ import { LevelUpModal, type Particle } from '../components/dashboard/LevelUpModa
 import { Leaf, Users, Gavel } from 'lucide-react';
 import { BarChart, BadgeDelta, ProgressCircle, CategoryBar } from '@tremor/react';
 import { useAuth } from '../context/useAuth';
-import { doc, getDoc, collection, query, where, getDocs, limit } from 'firebase/firestore';
+import { doc, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
-import type { Company, Mission } from '../types';
+import type { Company } from '../types';
 import { getGoalsDataForChart, getDeltaType, formatDelta } from '../utils/scoreCalculator';
 
 export const DashboardPage: React.FC = () => {
   const { user } = useAuth();
   const [company, setCompany] = useState<Company | null>(null);
-  const [missions, setMissions] = useState<Mission[]>([]);
   const [loading, setLoading] = useState(true);
   
   const [showLevelUp, setShowLevelUp] = useState(false);
@@ -35,15 +34,6 @@ export const DashboardPage: React.FC = () => {
           
           if (companyDoc.exists()) {
             setCompany({ id: companyDoc.id, ...companyDoc.data() } as Company);
-            
-            const missionsQuery = query(
-              collection(db, 'missions'),
-              where('companyId', '==', companyId),
-              limit(5)
-            );
-            const missionsSnap = await getDocs(missionsQuery);
-            const missionsList = missionsSnap.docs.map(doc => ({ id: doc.id, ...doc.data() } as Mission));
-            setMissions(missionsList);
           }
         }
       } catch (err) {
@@ -189,7 +179,7 @@ export const DashboardPage: React.FC = () => {
 
       <div className="grid grid-cols-1 xl:grid-cols-3 gap-6">
         <div className="xl:col-span-2">
-          <RecentMissions missions={missions} />
+          <RecentMissions />
         </div>
         
         <div className="space-y-6">

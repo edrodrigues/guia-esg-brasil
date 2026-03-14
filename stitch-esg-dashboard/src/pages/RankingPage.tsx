@@ -296,11 +296,11 @@ export const RankingPage: React.FC = () => {
           <div className="relative z-10 max-w-2xl mx-auto">
             <h3 className="text-4xl font-black mb-6 uppercase tracking-tighter italic">Pronto para Subir de Nível?</h3>
             <p className="text-white/70 font-bold mb-10 text-lg uppercase tracking-widest">
-              Nossos mentores podem te ajudar a desbloquear novas conquistas e dominar o ranking nacional.
+              Nossos consultores podem te ajudar a desbloquear novas conquistas e dominar o ranking nacional.
             </p>
             <div className="flex flex-col sm:flex-row gap-6 justify-center">
               <button className="bg-white text-primary px-10 py-4 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-slate-50 transition-all active:scale-95 shadow-lg shadow-white/10">
-                Falar com um Mestre
+                Falar com um Consultor
               </button>
               <button className="bg-transparent border-2 border-white/30 text-white px-10 py-4 rounded-2xl font-black uppercase text-xs tracking-[0.2em] hover:bg-white/10 transition-all active:scale-95">
                 Baixar Estratégia

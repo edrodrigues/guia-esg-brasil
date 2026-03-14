@@ -33,11 +33,52 @@ export interface ESGDelta {
   governance: number;
 }
 
+export interface ESGSubScores {
+  sga: number;
+  energia: number;
+  agua: number;
+  residuos: number;
+  arClima: number;
+  materiaPrima: number;
+  cicloVida: number;
+  biodiversidade: number;
+  direitosHumanos: number;
+  praticasTrabalhistas: number;
+  saudeSeguranca: number;
+  treinamento: number;
+  diversidade: number;
+  comunidade: number;
+  culturaValores: number;
+  gestaoRiscos: number;
+  conformidade: number;
+  etica: number;
+  transparencia: number;
+}
+
+export interface EvolutionDataPoint {
+  month: string;
+  year: number;
+  environmental: number;
+  social: number;
+  governance: number;
+  average: number;
+}
+
 export interface CompanyGoals {
   energia: number;
   residuos: number;
   diversidade: number;
   etica: number;
+}
+
+export interface UserPreferences {
+  theme: 'light' | 'dark' | 'system';
+  notifications: {
+    weeklyReport: boolean;
+    missionUpdates: boolean;
+    scoreChanges: boolean;
+  };
+  language: string;
 }
 
 export interface Company {
@@ -51,11 +92,15 @@ export interface Company {
   esgScores: ESGScore;
   esgDelta?: ESGDelta;
   goals?: CompanyGoals;
-  environmentalSubScores?: Record<string, number>;
-  evolutionData?: { month: string; score: number }[];
+  environmentalSubScores?: Partial<ESGSubScores>;
+  socialSubScores?: Partial<ESGSubScores>;
+  governanceSubScores?: Partial<ESGSubScores>;
+  evolutionData?: EvolutionDataPoint[];
   lastEnvironmentalUpdate?: Date;
   lastSocialUpdate?: Date;
   lastGovernanceUpdate?: Date;
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export interface UserProfile {

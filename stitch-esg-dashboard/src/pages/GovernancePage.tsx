@@ -1,27 +1,43 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useMemo } from 'react';
 import { DashboardLayout } from '../components/layout/DashboardLayout';
 import { Card } from '../components/ui/Card';
 import { Gavel, TrendingUp, Scale, ShieldAlert, FileCheck } from 'lucide-react';
 import { AreaChart, BadgeDelta } from '@tremor/react';
 import { useAuth } from '../context/useAuth';
-import { doc, getDoc } from 'firebase/firestore';
+import { doc, getDoc, collection, query, where, orderBy, limit, getDocs } from 'firebase/firestore';
 import { db } from '../firebase';
-import type { Company } from '../types';
+import type { Company, Mission } from '../types';
 
-const chartData = [
-  { date: 'JAN', 'Conformidade': 90 },
-  { date: 'FEV', 'Conformidade': 92 },
-  { date: 'MAR', 'Conformidade': 91 },
-  { date: 'ABR', 'Conformidade': 95 },
-  { date: 'MAI', 'Conformidade': 98 },
-  { date: 'JUN', 'Conformidade': 100 },
-  { date: 'JUL', 'Conformidade': 100 },
+const DEFAULT_CHART_DATA = [
+  { date: 'JAN', 'Conformidade': 0 },
+  { date: 'FEV', 'Conformidade': 0 },
+  { date: 'MAR', 'Conformidade': 0 },
+  { date: 'ABR', 'Conformidade': 0 },
+  { date: 'MAI', 'Conformidade': 0 },
+  { date: 'JUN', 'Conformidade': 0 },
+  { date: 'JUL', 'Conformidade': 0 },
 ];
 
 export const GovernancePage: React.FC = () => {
   const { user } = useAuth();
   const [company, setCompany] = useState<Company | null>(null);
   const [loading, setLoading] = useState(true);
+  const [missions, setMissions] = useState<Mission[]>([]);
+
+  // Chart data dinâmico baseado em dados reais
+  const chartData = useMemo(() => {
+    if (!company?.evolutionData || company.evolutionData.length === 0) {
+      return DEFAULT_CHART_DATA.map(item => ({
+        ...item,
+        'Conformidade': company?.esgScores?.governance || 0,
+      }));
+    }
+    
+    return company.evolutionData.map(point => ({
+      date: point.month,
+      'Conformidade': point.governance,
+    }));
+  }, [company?.evolutionData, company?.esgScores?.governance]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,6 +51,21 @@ export const GovernancePage: React.FC = () => {
             const companyData = { id: companyDoc.id, ...companyDoc.data() } as Company;
             setCompany(companyData);
           }
+
+          // Buscar missões de governança reais do Firestore
+          const missionsQuery = query(
+            collection(db, 'missions'),
+            where('companyId', '==', companyId),
+            where('type', '==', 'G'),
+            orderBy('deadline', 'asc'),
+            limit(5)
+          );
+          const missionsSnap = await getDocs(missionsQuery);
+          const missionsList = missionsSnap.docs.map(doc => ({
+            id: doc.id,
+            ...doc.data()
+          } as Mission));
+          setMissions(missionsList);
         }
       } catch (err) {
         console.error("Error fetching governance data:", err);
@@ -131,27 +162,50 @@ export const GovernancePage: React.FC = () => {
 
           <Card title="Próximas Missões de Governança">
             <div className="space-y-4">
-              {[
-                { icon: ShieldAlert, title: 'Código de Conduta', points: '+400 XP', status: 'Em Curso' },
-                { icon: Scale, title: 'Canal de Denúncias', points: '+600 XP', status: 'Pendente' },
-              ].map((mission, i) => (
-                <div key={i} className="flex items-center justify-between p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group cursor-pointer">
-                  <div className="flex items-center gap-4">
-                    <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl group-hover:bg-governance/10 group-hover:text-governance transition-all">
-                      <mission.icon size={24} />
+              {missions.length > 0 ? (
+                missions.map((mission) => (
+                  <div key={mission.id} className="flex items-center justify-between p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group cursor-pointer">
+                    <div className="flex items-center gap-4">
+                      <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl group-hover:bg-governance/10 group-hover:text-governance transition-all">
+                        <ShieldAlert size={24} />
+                      </div>
+                      <div>
+                        <p className="font-black text-xs text-slate-900 dark:text-slate-100 uppercase tracking-tight">{mission.title}</p>
+                        <p className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 italic">+500 XP</p>
+                      </div>
                     </div>
-                    <div>
-                      <p className="font-black text-xs text-slate-900 dark:text-slate-100 uppercase tracking-tight">{mission.title}</p>
-                      <p className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 italic">{mission.points}</p>
-                    </div>
+                    <span className={`px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest border-2 ${
+                      mission.status === 'em_curso' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-100'
+                    }`}>
+                      {mission.status === 'em_curso' ? 'Em Curso' : mission.status === 'concluido' ? 'Concluído' : 'Pendente'}
+                    </span>
                   </div>
-                  <span className={`px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest border-2 ${
-                    mission.status === 'Em Curso' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-100'
-                  }`}>
-                    {mission.status}
-                  </span>
-                </div>
-              ))}
+                ))
+              ) : (
+                <>
+                  {[
+                    { icon: ShieldAlert, title: 'Código de Conduta', points: '+400 XP', status: 'Em Curso' },
+                    { icon: Scale, title: 'Canal de Denúncias', points: '+600 XP', status: 'Pendente' },
+                  ].map((mission, i) => (
+                    <div key={i} className="flex items-center justify-between p-5 rounded-2xl border-2 border-slate-100 dark:border-slate-800 hover:border-primary/30 transition-all group cursor-pointer">
+                      <div className="flex items-center gap-4">
+                        <div className="p-3 bg-slate-100 dark:bg-slate-800 text-slate-600 dark:text-slate-300 rounded-xl group-hover:bg-governance/10 group-hover:text-governance transition-all">
+                          <mission.icon size={24} />
+                        </div>
+                        <div>
+                          <p className="font-black text-xs text-slate-900 dark:text-slate-100 uppercase tracking-tight">{mission.title}</p>
+                          <p className="text-[10px] text-primary font-black uppercase tracking-widest mt-1 italic">{mission.points}</p>
+                        </div>
+                      </div>
+                      <span className={`px-3 py-1 rounded-xl text-[8px] font-black uppercase tracking-widest border-2 ${
+                        mission.status === 'Em Curso' ? 'bg-blue-50 text-blue-600 border-blue-100' : 'bg-slate-50 text-slate-500 border-slate-100'
+                      }`}>
+                        {mission.status}
+                      </span>
+                    </div>
+                  ))}
+                </>
+              )}
             </div>
           </Card>
         </div>
